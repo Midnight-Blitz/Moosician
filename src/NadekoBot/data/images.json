@@ -1,0 +1,136 @@
+{
+  "Version": 3,
+  "NoContext": [
+    "https://i.imgur.com/BnkjiQI.png",
+    "https://i.imgur.com/cO9ZOiV.png",
+    "https://i.imgur.com/Z7NIduI.png",
+    "https://i.imgur.com/Qgp92a8.png",
+    "https://i.imgur.com/NqWs9DB.png",
+    "https://i.imgur.com/zYZ0Ctx.png",
+    "https://i.imgur.com/wpb2jWZ.png",
+    "https://i.imgur.com/RZE58Js.png",
+    "https://i.imgur.com/1b30QQe.png",
+    "https://i.imgur.com/YsAyEvA.png",
+    "https://i.imgur.com/Bs4SCsj.png",
+    "https://i.imgur.com/qv1FS7M.png",
+    "https://i.imgur.com/rzkhteA.png",
+    "https://i.imgur.com/J03rKPu.png",
+    "https://i.imgur.com/tDlgf81.png",
+    "https://i.imgur.com/bqtyWDi.png",
+    "https://i.imgur.com/7Yb9Khh.png",
+    "https://i.imgur.com/x1IT0m6.png",
+    "https://i.imgur.com/lmLBTCT.png",
+    "https://i.imgur.com/LiiO8h3.png",
+    "https://i.imgur.com/m6eaIvN.png",
+    "https://i.imgur.com/ZRrlzgA.png",
+    "https://i.imgur.com/TiByhec.png",
+    "https://i.imgur.com/RwkMTQ8.png",
+    "https://i.imgur.com/BiW0oDr.png",
+    "https://i.imgur.com/w9rzHvp.png",
+    "https://i.imgur.com/QWNmwag.gifv",
+    "https://i.imgur.com/1nMpwCx.png",
+    "https://i.imgur.com/RBGvIvs.png",
+    "https://i.imgur.com/McMNa8q.png",
+    "https://i.imgur.com/VgJ0JHj.png",
+    "https://i.imgur.com/Di2F7x8.png",
+    "https://i.imgur.com/JihWuIh.png",
+    "https://i.imgur.com/a8c2EyT.png",
+    "https://i.imgur.com/7ArQaeC.png",
+    "https://i.imgur.com/Wu2ols3.png",
+    "https://i.imgur.com/NnqXJwV.png",
+    "https://i.imgur.com/pAh7QZZ.png",
+    "https://i.imgur.com/Dnwuy2Q.png",
+    "https://i.imgur.com/zHJMFOg.png",
+    "https://i.imgur.com/VUxeI35.png",
+    "https://i.imgur.com/6d891Bo.png",
+    "https://i.imgur.com/MN2VX3Y.png",
+    "https://i.imgur.com/BMtuRkE.png",
+    "https://i.imgur.com/i4F1CBs.png",
+    "https://i.imgur.com/E9HrytH.png",
+    "https://i.imgur.com/10KmU08.png",
+    "https://i.imgur.com/FKlxbxQ.png",
+    "https://i.imgur.com/6tzg0zV.png",
+    "https://i.imgur.com/dZZXE5d.png",
+    "https://i.imgur.com/p1hOeYo.png",
+    "https://i.imgur.com/FKVLcjo.png",
+    "https://i.imgur.com/5BB4cYw.png",
+    "https://i.imgur.com/XEana5y.png",
+    "https://i.imgur.com/A9ARAXC.jpg",
+    "https://i.imgur.com/VdlnINB.png",
+    "https://i.imgur.com/Q4bix7Y.png",
+    "https://i.imgur.com/YLE40ya.png",
+    "https://i.imgur.com/JN2PXYj.png",
+    "https://i.imgur.com/xvEU9gd.png",
+    "https://i.imgur.com/vlmgbde.png",
+    "https://i.imgur.com/4G6OdbD.png",
+    "https://i.imgur.com/LiTbqLY.png",
+    "https://i.imgur.com/P6BLykU.png"
+    
+  ],
+  "Coins": {
+    "Heads": [
+      "https://i.imgur.com/rlLWef6.png"
+    ],
+    "Tails": [
+      "https://i.imgur.com/RZbqSXA.png"
+    ],
+    "Side": [
+      "https://i.imgur.com/lNp7BnJ.gif"
+    ]
+  },
+  "Currency": [
+    "https://i.imgur.com/7zmFGaa.jpg",
+    "https://i.imgur.com/TJ3U0bc.jpg",
+    "https://i.imgur.com/ZM5yIUz.jpg",
+    "https://i.imgur.com/lsZjkBy.jpg",
+    "https://i.imgur.com/JGpHCM9.jpg",
+    "https://i.imgur.com/CF3UMbt.png",
+    "https://i.imgur.com/EkswEze.png"
+  ],
+  "Dice": [
+    "https://i.imgur.com/KyOfDw1.png",
+    "https://i.imgur.com/IX8xjZ3.png",
+    "https://i.imgur.com/k9GqKp5.png",
+    "https://i.imgur.com/rmhTSnp.png",
+    "https://i.imgur.com/93PUmFr.png",
+    "https://i.imgur.com/CMBCJRC.png",
+    "https://i.imgur.com/VqhUpsV.png",
+    "https://i.imgur.com/r6rFCuT.png",
+    "https://i.imgur.com/eIxuOpg.png",
+    "https://i.imgur.com/At9YgRO.png"
+  ],
+  "Rategirl": {
+    "Matrix": "https://i.imgur.com/z7yySqA.png",
+    "Dot": "https://i.imgur.com/TpubajW.png"
+  },
+  "Xp": {
+    "Bg": "https://i.imgur.com/ozgFffJ.png"
+  },
+  "Rip": {
+    "Bg": "https://i.imgur.com/LFKznf5.png",
+    "Overlay": "https://i.imgur.com/vbmPcZL.png"
+  },
+  "Slots": {
+    "Emojis": [
+      "https://i.imgur.com/5GhCEW1.png",
+      "https://i.imgur.com/TscMa1Y.png",
+      "https://i.imgur.com/5J6q7Ga.png",
+      "https://i.imgur.com/wh3j6W0.png",
+      "https://i.imgur.com/OzY2dBV.png",
+      "https://i.imgur.com/SQMv0x1.png"
+    ],
+    "Numbers": [
+      "https://nadeko-pictures.nyc3.digitaloceanspaces.com/other/slots/numbers/0.png",
+      "https://nadeko-pictures.nyc3.digitaloceanspaces.com/other/slots/numbers/1.png",
+      "https://nadeko-pictures.nyc3.digitaloceanspaces.com/other/slots/numbers/2.png",
+      "https://nadeko-pictures.nyc3.digitaloceanspaces.com/other/slots/numbers/3.png",
+      "https://nadeko-pictures.nyc3.digitaloceanspaces.com/other/slots/numbers/4.png",
+      "https://nadeko-pictures.nyc3.digitaloceanspaces.com/other/slots/numbers/5.png",
+      "https://nadeko-pictures.nyc3.digitaloceanspaces.com/other/slots/numbers/6.png",
+      "https://nadeko-pictures.nyc3.digitaloceanspaces.com/other/slots/numbers/7.png",
+      "https://nadeko-pictures.nyc3.digitaloceanspaces.com/other/slots/numbers/8.png",
+      "https://nadeko-pictures.nyc3.digitaloceanspaces.com/other/slots/numbers/9.png"
+    ],
+    "Bg": "https://i.imgur.com/Mc4eD8I.png"
+  }
+}
