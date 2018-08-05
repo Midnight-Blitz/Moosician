@@ -22,18 +22,20 @@ namespace NadekoBot.Modules.Gambling
         private readonly ICurrencyService _cs;
         private readonly IDataCache _cache;
         private readonly DiscordSocketClient _client;
+        private readonly IBotConfigProvider _bc;
 
         private string CurrencyName => Bc.BotConfig.CurrencyName;
         private string CurrencyPluralName => Bc.BotConfig.CurrencyPluralName;
         private string CurrencySign => Bc.BotConfig.CurrencySign;
 
         public Gambling(DbService db, ICurrencyService currency,
-            IDataCache cache, DiscordSocketClient client)
+            IDataCache cache, DiscordSocketClient client, IBotConfigProvider bc)
         {
             _db = db;
             _cs = currency;
             _cache = cache;
             _client = client;
+            _bc = bc;
         }
 
         public long GetCurrency(ulong id)
@@ -53,6 +55,22 @@ namespace NadekoBot.Modules.Gambling
                 uow.Complete();
             }
             return amount;
+        }
+
+        [NadekoCommand, Usage, Description, Aliases]
+        public async Task Economy()
+        {
+            var ec = _service.GetEconomy();
+            var embed = new EmbedBuilder()
+                .WithTitle(GetText("economy_state"))
+                .AddField(GetText("currency_owned"), ((ulong)ec.Cash) + _bc.BotConfig.CurrencySign)
+                .AddField(GetText("currency_one_percent"), ((ec.OnePercent / ec.Cash) * 100).ToString("F2") + "%")
+                .AddField(GetText("currency_planted"), ((ulong)ec.Planted) + _bc.BotConfig.CurrencySign)
+                .AddField(GetText("owned_waifus_total"), ((ulong)ec.Waifus) + _bc.BotConfig.CurrencySign)
+                .AddField(GetText("bot_currency"), ec.Bot + _bc.BotConfig.CurrencySign)
+                .AddField(GetText("total"), ((ulong)(ec.Cash + ec.Bot + ec.Planted + ec.Waifus)) + _bc.BotConfig.CurrencySign)
+                .WithOkColor();
+            await Context.Channel.EmbedAsync(embed).ConfigureAwait(false);
         }
 
         [NadekoCommand, Usage, Description, Aliases]
@@ -414,61 +432,6 @@ namespace NadekoBot.Modules.Gambling
             }
         }
 
-        //[NadekoCommand, Usage, Description, Aliases]
-        //[OwnerOnly]
-        //public Task BrTest(int tests = 1000)
-        //{
-        //    var t = Task.Run(async () =>
-        //    {
-        //        if (tests <= 0)
-        //            return;
-        //        //multi vs how many times it occured
-        //        var dict = new Dictionary<int, int>();
-        //        var generator = new NadekoRandom();
-        //        for (int i = 0; i < tests; i++)
-        //        {
-        //            var rng = generator.Next(0, 101);
-        //            var mult = 0;
-        //            if (rng < 67)
-        //            {
-        //                mult = 0;
-        //            }
-        //            else if (rng < 91)
-        //            {
-        //                mult = 2;
-        //            }
-        //            else if (rng < 100)
-        //            {
-        //                mult = 4;
-        //            }
-        //            else
-        //                mult = 10;
-
-        //            if (dict.ContainsKey(mult))
-        //                dict[mult] += 1;
-        //            else
-        //                dict.Add(mult, 1);
-        //        }
-
-        //        var sb = new StringBuilder();
-        //        const int bet = 1;
-        //        int payout = 0;
-        //        foreach (var key in dict.Keys.OrderByDescending(x => x))
-        //        {
-        //            sb.AppendLine($"x{key} occured {dict[key]} times. {dict[key] * 1.0f / tests * 100}%");
-        //            payout += key * dict[key];
-        //        }
-        //        try
-        //        {
-        //            await Context.Channel.SendConfirmAsync("BetRoll Test Results", sb.ToString(),
-        //                footer: $"Total Bet: {tests * bet} | Payout: {payout * bet} | {payout * 1.0f / tests * 100}%");
-        //        }
-        //        catch { }
-
-        //    });
-        //    return Task.CompletedTask;
-        //}
-
         private async Task InternallBetroll(long amount)
         {
             if (!await CheckBetMandatory(amount).ConfigureAwait(false))
@@ -488,23 +451,27 @@ namespace NadekoBot.Modules.Gambling
             }
             else
             {
+                long win;
                 if (rnd < 91)
                 {
-                    str += GetText("br_win", (amount * Bc.BotConfig.Betroll67Multiplier) + CurrencySign, 66);
+                    win = (long)(amount * Bc.BotConfig.Betroll67Multiplier);
+                    str += GetText("br_win", win + CurrencySign, 66);
                     await _cs.AddAsync(Context.User, "Betroll Gamble",
-                        (int)(amount * Bc.BotConfig.Betroll67Multiplier), false, gamble: true).ConfigureAwait(false);
+                        win, false, gamble: true).ConfigureAwait(false);
                 }
                 else if (rnd < 100)
                 {
-                    str += GetText("br_win", (amount * Bc.BotConfig.Betroll91Multiplier) + CurrencySign, 90);
+                    win = (long)(amount * Bc.BotConfig.Betroll91Multiplier);
+                    str += GetText("br_win", win + CurrencySign, 90);
                     await _cs.AddAsync(Context.User, "Betroll Gamble",
-                        (int)(amount * Bc.BotConfig.Betroll91Multiplier), false, gamble: true).ConfigureAwait(false);
+                        win, false, gamble: true).ConfigureAwait(false);
                 }
                 else
                 {
-                    str += GetText("br_win", (amount * Bc.BotConfig.Betroll100Multiplier) + CurrencySign, 99) + " 👑";
+                    win = (long)(amount * Bc.BotConfig.Betroll100Multiplier);
+                    str += GetText("br_win", win + CurrencySign, 99) + " 👑";
                     await _cs.AddAsync(Context.User, "Betroll Gamble",
-                        (int)(amount * Bc.BotConfig.Betroll100Multiplier), false, gamble: true).ConfigureAwait(false);
+                        win, false, gamble: true).ConfigureAwait(false);
                 }
             }
             await Context.Channel.SendConfirmAsync(str).ConfigureAwait(false);

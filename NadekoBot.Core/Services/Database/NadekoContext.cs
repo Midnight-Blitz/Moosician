@@ -331,6 +331,12 @@ namespace NadekoBot.Core.Services.Database
                 .IsUnique();
             #endregion
 
+            #region  GroupName
+            modelBuilder.Entity<GroupName>()
+                .HasIndex(x => x.Number)
+                .IsUnique();
+            #endregion
+
             #region CurrencyTransactions
             modelBuilder.Entity<CurrencyTransaction>()
                 .HasIndex(x => x.DateAdded);

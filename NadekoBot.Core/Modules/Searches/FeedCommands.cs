@@ -44,7 +44,7 @@ namespace NadekoBot.Modules.Searches
                         catch (Exception ex)
                         {
 
-                            Console.WriteLine(ex);
+                            _log.Warn(ex);
                             success = false;
                         }
                     }

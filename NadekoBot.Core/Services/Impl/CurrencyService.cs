@@ -87,12 +87,12 @@ namespace NadekoBot.Core.Services
             {
                 try
                 {
-                    await (await user.GetOrCreateDMChannelAsync().ConfigureAwait(false))
+                    await (await user.GetOrCreateDMChannelAsync())
                         .EmbedAsync(new EmbedBuilder()
                             .WithOkColor()
                             .WithTitle($"Received {_config.BotConfig.CurrencySign}")
                             .AddField("Amount", amount)
-                            .AddField("Reason", reason)).ConfigureAwait(false);
+                            .AddField("Reason", reason));
                 }
                 catch
                 {
