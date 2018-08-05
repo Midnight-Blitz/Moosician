@@ -3511,6 +3511,13 @@
     "desc": "Breakdown of the current state of the bot's economy. Updates every 3 minutes.",
     "usage": [
       "{0}economy"
-    ]
+    ],
+    "deleteunusedcrnq": {
+      "cmd": "deleteunusedcr",
+      "desc": "Deletes all quotes and custom reactions which are older than 60 days and haven't been used a single time.",
+      "usage": [
+        "{0}deleteunusedcr"
+      ]
+    }
   }
 }
