@@ -115,7 +115,7 @@ namespace NadekoBot.Modules.Games.Services
                 var message = PrepareMessage(usrMsg, out IChatterBotSession cbs);
                 if (message == null || cbs == null)
                     return false;
-                
+
                 var pc = _perms.GetCacheFor(guild.Id);
                 if (!pc.Permissions.CheckPermissions(usrMsg,
                     "cleverbot",
@@ -134,9 +134,9 @@ namespace NadekoBot.Modules.Games.Services
                 var cleverbotExecuted = await TryAsk(cbs, (ITextChannel)usrMsg.Channel, message).ConfigureAwait(false);
                 if (cleverbotExecuted)
                 {
-                    _log.Info($@"CleverBot Logs
+                    _log.Info($@"CleverBot Info
 Channel: {usrMsg.Channel?.Name} [{usrMsg.Channel?.Id}]
-UserId: {usrMsg.Author} [{usrMsg.Author.Id}]
+UId: {usrMsg.Author} [{usrMsg.Author.Id}]
 Message: {usrMsg.Content}");
                     return true;
                 }

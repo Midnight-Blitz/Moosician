@@ -24,6 +24,7 @@ namespace NadekoBot.Modules.Games.Common.ChatterBot
         {
             this._apiKey = apiKey;
             this._httpFactory = factory;
+            this._log = LogManager.GetCurrentClassLogger();
         }
 
         public async Task<string> Think(string input)
@@ -52,7 +53,6 @@ namespace NadekoBot.Modules.Games.Common.ChatterBot
     {
         private readonly string _key;
         private readonly string _user;
-
         private readonly IHttpClientFactory _httpFactory;
         private readonly AsyncLazy<string> _nick;
 

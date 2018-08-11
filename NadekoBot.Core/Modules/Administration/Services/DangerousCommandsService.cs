@@ -26,6 +26,11 @@ SET ClubId=NULL,
 DELETE FROM ClubApplicants;
 DELETE FROM ClubBans;
 DELETE FROM Clubs;";
+        public const string DeleteUnusedCustomReactionsAndQuotes = @"DELETE FROM CustomReactions 
+WHERE UseCount=0 AND DateAdded < date('now', '-60 day');;
+ DELETE FROM Quotes 
+WHERE UseCount=0 AND DateAdded < date('now', '-60 day');;
+ ";
 
         private readonly DbService _db;
 
