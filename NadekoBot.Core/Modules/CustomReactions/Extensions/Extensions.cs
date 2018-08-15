@@ -49,7 +49,7 @@ namespace NadekoBot.Modules.CustomReactions.Extensions
         {
             var rep = new ReplacementBuilder()
                 .WithUser(ctx.Author)
-                .WithClient(client)
+                .WithMention(client)
                 .Build();
 
             str = rep.Replace(str.ToLowerInvariant());
@@ -78,10 +78,13 @@ namespace NadekoBot.Modules.CustomReactions.Extensions
 
             str = rep.Replace(str);
 
+
+#if !GLOBAL_NADEKO
             foreach (var ph in regexPlaceholders)
             {
                 str = await ph.Key.ReplaceAsync(str, ph.Value).ConfigureAwait(false);
             }
+#endif
             return str;
         }
 

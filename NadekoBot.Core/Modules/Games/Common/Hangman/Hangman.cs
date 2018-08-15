@@ -165,7 +165,7 @@ namespace NadekoBot.Modules.Games.Common.Hangman
             OnLetterAlreadyUsed = null;
             _previousGuesses.Clear();
             _recentUsers.Clear();
-            _locker.Dispose();
+            // _locker.Dispose();
         }
     }
 }

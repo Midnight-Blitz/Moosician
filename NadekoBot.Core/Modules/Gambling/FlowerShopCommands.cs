@@ -320,9 +320,8 @@ namespace NadekoBot.Modules.Gambling
                     removed = entries.ElementAtOrDefault(index);
                     if (removed != null)
                     {
-                        entries.Remove(removed);
-
-                        config.ShopEntries = entries;
+                        uow._context.RemoveRange(removed.Items);
+                        uow._context.Remove(removed);
                         uow.Complete();
                     }
                 }

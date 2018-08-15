@@ -48,7 +48,9 @@ namespace NadekoBot.Modules.Permissions
                     var config = uow.GuildConfigs.ForId(channel.Guild.Id, set => set.Include(gc => gc.CommandCooldowns));
                     var localSet = CommandCooldowns.GetOrAdd(channel.Guild.Id, new ConcurrentHashSet<CommandCooldown>());
 
-                    config.CommandCooldowns.RemoveWhere(cc => cc.CommandName == command.Aliases.First().ToLowerInvariant());
+                    var toDelete = config.CommandCooldowns.FirstOrDefault(cc => cc.CommandName == command.Aliases.First().ToLowerInvariant());
+                    if (toDelete != null)
+                        uow._context.Set<CommandCooldown>().Remove(toDelete);
                     localSet.RemoveWhere(cc => cc.CommandName == command.Aliases.First().ToLowerInvariant());
                     if (secs != 0)
                     {

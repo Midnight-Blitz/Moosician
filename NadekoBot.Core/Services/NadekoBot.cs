@@ -72,7 +72,7 @@ namespace NadekoBot
             Cache = new RedisCache(Credentials, shardId);
             _db = new DbService(Credentials);
             
-            if(shardId == 0)
+            if (shardId == 0)
             {
                 _db.Setup();
             }
@@ -84,7 +84,7 @@ namespace NadekoBot
 #else
                 MessageCacheSize = 50,
 #endif
-                LogLevel = LogSeverity.Info,
+                LogLevel = LogSeverity.Warning,
                 ConnectionTimeout = int.MaxValue,
                 TotalShards = Credentials.TotalShards,
                 ShardId = shardId,
@@ -101,6 +101,7 @@ namespace NadekoBot
                 _botConfig = uow.BotConfig.GetOrCreate();
                 OkColor = new Color(Convert.ToUInt32(_botConfig.OkColor, 16));
                 ErrorColor = new Color(Convert.ToUInt32(_botConfig.ErrorColor, 16));
+                uow.Complete();
             }
 
             SetupShard(parentProcessId);
@@ -133,9 +134,21 @@ namespace NadekoBot
             });
         }
 
+        private List<ulong> GetCurrentGuildIds()
+        {
+            return Client.Guilds.Select(x => x.Id).ToList();
+        }
+        public IEnumerable<GuildConfig> GetCurrentGuildConfigs()
+        {
+            using (var uow = _db.UnitOfWork)
+            {
+                return uow.GuildConfigs.GetAllGuildConfigs(GetCurrentGuildIds()).ToImmutableArray();
+            }
+        }
+
         private void AddServices()
         {
-            var startingGuildIdList = Client.Guilds.Select(x => x.Id).ToList();
+            var startingGuildIdList = GetCurrentGuildIds();
 
             //this unit of work will be used for initialization of all modules too, to prevent multiple queries from running
             using (var uow = _db.UnitOfWork)
@@ -345,8 +358,10 @@ namespace NadekoBot
         {
             try
             {
-                File.WriteAllText("test", "test");
-                File.Delete("test");
+                var rng = new NadekoRandom().Next(100000, 1000000);
+                var str = rng.ToString();
+                File.WriteAllText(str, str);
+                File.Delete(str);
             }
             catch
             {

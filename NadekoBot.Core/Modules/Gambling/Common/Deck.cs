@@ -10,15 +10,15 @@ namespace NadekoBot.Modules.Gambling.Common
     {
         protected override void RefillPool()
         {
-            cardPool = new List<Card>(52 * 4);
+            CardPool = new List<Card>(52 * 4);
             for (var j = 1; j < 14; j++)
             {
                 for (var i = 1; i < 5; i++)
                 {
-                    cardPool.Add(new Card((CardSuit)i, j));
-                    cardPool.Add(new Card((CardSuit)i, j));
-                    cardPool.Add(new Card((CardSuit)i, j));
-                    cardPool.Add(new Card((CardSuit)i, j));
+                    CardPool.Add(new Card((CardSuit)i, j));
+                    CardPool.Add(new Card((CardSuit)i, j));
+                    CardPool.Add(new Card((CardSuit)i, j));
+                    CardPool.Add(new Card((CardSuit)i, j));
                 }
             }
         }
@@ -52,13 +52,12 @@ namespace NadekoBot.Modules.Gambling.Common
             Clubs = 4
         }
 
-        public CardSuit Suit { get; }
         public class Card : IComparable
         {
             public CardSuit Suit { get; }
             public int Number { get; }
 
-            public string Name
+            public string FullName
             {
                 get
                 {
@@ -70,9 +69,9 @@ namespace NadekoBot.Modules.Gambling.Common
                     }
                     else
                     {
-                        str += GetName().ToLower();
+                        str += GetValueText().ToLowerInvariant();
                     }
-                    return str + "_of_" + Suit.ToString().ToLower();
+                    return str + "_of_" + Suit.ToString().ToLowerInvariant();
                 }
             }
 
@@ -82,7 +81,7 @@ namespace NadekoBot.Modules.Gambling.Common
                 this.Number = cardNum;
             }
 
-            public string GetName() => cardNames[Number];
+            public string GetValueText() => cardNames[Number];
 
             public override string ToString() => cardNames[Number] + " Of " + Suit;
 
@@ -93,7 +92,7 @@ namespace NadekoBot.Modules.Gambling.Common
                 return this.Number - c.Number;
             }
 
-            public Card Parse(string input)
+            public static Card Parse(string input)
             {
                 if (string.IsNullOrWhiteSpace(input))
                     throw new ArgumentNullException(nameof(input));
@@ -102,7 +101,7 @@ namespace NadekoBot.Modules.Gambling.Common
                     || !_numberCharToNumber.TryGetValue(input[0], out var n)
                     || !_suitCharToSuit.TryGetValue(input[1].ToString(), out var s))
                 {
-                    throw new ArgumentException(nameof(input));
+                    throw new ArgumentException("Invalid input", nameof(input));
                 }
 
                 return new Card(s, n);
@@ -133,7 +132,7 @@ namespace NadekoBot.Modules.Gambling.Common
                 "🇶",
                 "🇰"
             };
-            private static IReadOnlyDictionary<CardSuit, string> _suitToSuitChar = new Dictionary<CardSuit, string>
+            private static readonly IReadOnlyDictionary<CardSuit, string> _suitToSuitChar = new Dictionary<CardSuit, string>
             {
                 {CardSuit.Diamonds, "♦"},
                 {CardSuit.Clubs, "♣"},
@@ -168,13 +167,8 @@ namespace NadekoBot.Modules.Gambling.Common
                 {'k', 13 },
             };
         }
-        protected List<Card> cardPool;
-        public List<Card> CardPool
-        {
-            get { return cardPool; }
-            set { cardPool = value; }
-        }
 
+        public List<Card> CardPool { get; set; }
         /// <summary>
         /// Creates a new instance of the BlackJackGame, this allows you to create multiple games running at one time.
         /// </summary>
@@ -198,7 +192,7 @@ namespace NadekoBot.Modules.Gambling.Common
         /// </summary>
         protected virtual void RefillPool()
         {
-            cardPool = new List<Card>(52);
+            CardPool = new List<Card>(52);
             //foreach suit
             for (var j = 1; j < 14; j++)
             {
@@ -208,7 +202,7 @@ namespace NadekoBot.Modules.Gambling.Common
                     //generate a card of that suit and number and add it to the pool
 
                     // the pool will go from ace of spades,hears,diamonds,clubs all the way to the king of spades. hearts, ...
-                    cardPool.Add(new Card((CardSuit)i, j));
+                    CardPool.Add(new Card((CardSuit)i, j));
                 }
             }
         }
@@ -223,9 +217,9 @@ namespace NadekoBot.Modules.Gambling.Common
                 Restart();
             //you can either do this if your deck is not shuffled
 
-            var num = r.Next(0, cardPool.Count);
-            var c = cardPool[num];
-            cardPool.RemoveAt(num);
+            var num = r.Next(0, CardPool.Count);
+            var c = CardPool[num];
+            CardPool.RemoveAt(num);
             return c;
 
             // if you want to shuffle when you fill, then take the first one
@@ -240,67 +234,55 @@ namespace NadekoBot.Modules.Gambling.Common
         /// </summary>
         private void Shuffle()
         {
-            if (cardPool.Count <= 1) return;
-            var orderedPool = cardPool.Shuffle();
-            cardPool = cardPool as List<Card> ?? orderedPool.ToList();
+            if (CardPool.Count <= 1) return;
+            var orderedPool = CardPool.Shuffle();
+            CardPool = CardPool as List<Card> ?? orderedPool.ToList();
         }
-        public override string ToString() => string.Concat(cardPool.Select(c => c.ToString())) + Environment.NewLine;
+        public override string ToString() => string.Concat(CardPool.Select(c => c.ToString())) + Environment.NewLine;
 
         private static void InitHandValues()
         {
-            Func<List<Card>, bool> hasPair =
-                                  cards => cards.GroupBy(card => card.Number)
+            bool hasPair(List<Card> cards) => cards.GroupBy(card => card.Number)
                                                 .Count(group => group.Count() == 2) == 1;
-            Func<List<Card>, bool> isPair =
-                                  cards => cards.GroupBy(card => card.Number)
+            bool isPair(List<Card> cards) => cards.GroupBy(card => card.Number)
                                                 .Count(group => group.Count() == 3) == 0
                                            && hasPair(cards);
 
-            Func<List<Card>, bool> isTwoPair =
-                                  cards => cards.GroupBy(card => card.Number)
+            bool isTwoPair(List<Card> cards) => cards.GroupBy(card => card.Number)
                                                 .Count(group => group.Count() == 2) == 2;
 
-            Func<List<Card>, bool> isStraight =
-                cards =>
-                {
-                    if (cards.GroupBy(card => card.Number).Count() != cards.Count())
-                        return false;
-                    var toReturn = (cards.Max(card => (int)card.Number)
-                                        - cards.Min(card => (int)card.Number) == 4);
-                    if (toReturn || cards.All(c => c.Number != 1)) return toReturn;
+            bool isStraight(List<Card> cards)
+            {
+                if (cards.GroupBy(card => card.Number).Count() != cards.Count())
+                    return false;
+                var toReturn = (cards.Max(card => (int)card.Number)
+                                    - cards.Min(card => (int)card.Number) == 4);
+                if (toReturn || cards.All(c => c.Number != 1)) return toReturn;
 
-                    var newCards = cards.Select(c => c.Number == 1 ? new Card(c.Suit, 14) : c);
-                    return (newCards.Max(card => (int)card.Number)
-                            - newCards.Min(card => (int)card.Number) == 4);
-                };
+                var newCards = cards.Select(c => c.Number == 1 ? new Card(c.Suit, 14) : c);
+                return (newCards.Max(card => (int)card.Number)
+                        - newCards.Min(card => (int)card.Number) == 4);
+            }
 
-            Func<List<Card>, bool> hasThreeOfKind =
-                                  cards => cards.GroupBy(card => card.Number)
+            bool hasThreeOfKind(List<Card> cards) => cards.GroupBy(card => card.Number)
                                                 .Any(group => group.Count() == 3);
 
-            Func<List<Card>, bool> isThreeOfKind =
-                                  cards => hasThreeOfKind(cards) && !hasPair(cards);
+            bool isThreeOfKind(List<Card> cards) => hasThreeOfKind(cards) && !hasPair(cards);
 
-            Func<List<Card>, bool> isFlush =
-                                  cards => cards.GroupBy(card => card.Suit).Count() == 1;
+            bool isFlush(List<Card> cards) => cards.GroupBy(card => card.Suit).Count() == 1;
 
-            Func<List<Card>, bool> isFourOfKind =
-                                  cards => cards.GroupBy(card => card.Number)
+            bool isFourOfKind(List<Card> cards) => cards.GroupBy(card => card.Number)
                                                 .Any(group => group.Count() == 4);
 
-            Func<List<Card>, bool> isFullHouse =
-                                  cards => hasPair(cards) && hasThreeOfKind(cards);
+            bool isFullHouse(List<Card> cards) => hasPair(cards) && hasThreeOfKind(cards);
 
-            Func<List<Card>, bool> hasStraightFlush =
-                                  cards => isFlush(cards) && isStraight(cards);
+            bool hasStraightFlush(List<Card> cards) => isFlush(cards) && isStraight(cards);
 
-            Func<List<Card>, bool> isRoyalFlush =
-                                  cards => cards.Min(card => card.Number) == 1 &&
+            bool isRoyalFlush(List<Card> cards) => cards.Min(card => card.Number) == 1 &&
                                            cards.Max(card => card.Number) == 13
                                            && hasStraightFlush(cards);
 
-            Func<List<Card>, bool> isStraightFlush =
-                                  cards => hasStraightFlush(cards) && !isRoyalFlush(cards);
+            bool isStraightFlush(List<Card> cards) => hasStraightFlush(cards) && !isRoyalFlush(cards);
 
             handValues = new Dictionary<string, Func<List<Card>, bool>>
             {
@@ -324,7 +306,7 @@ namespace NadekoBot.Modules.Gambling.Common
             {
                 return kvp.Key;
             }
-            return "High card " + (cards.FirstOrDefault(c => c.Number == 1)?.GetName() ?? cards.Max().GetName());
+            return "High card " + (cards.FirstOrDefault(c => c.Number == 1)?.GetValueText() ?? cards.Max().GetValueText());
         }
     }
 }

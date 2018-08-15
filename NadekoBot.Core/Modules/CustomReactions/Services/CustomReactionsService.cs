@@ -12,11 +12,12 @@ using NadekoBot.Extensions;
 using NadekoBot.Core.Services.Database;
 using NadekoBot.Core.Services;
 using NadekoBot.Modules.CustomReactions.Extensions;
-using NadekoBot.Modules.Permissions.Common;
 using NadekoBot.Modules.Permissions.Services;
 using NadekoBot.Core.Services.Impl;
 using Newtonsoft.Json;
 using System.Collections.Generic;
+using NadekoBot.Modules.Permissions.Common;
+using System.Diagnostics;
 
 namespace NadekoBot.Modules.CustomReactions.Services
 {
@@ -30,8 +31,8 @@ namespace NadekoBot.Modules.CustomReactions.Services
             Message,
         }
         //todo move all logic inside and this can become a property
-        private readonly ConcurrentDictionary<int, CustomReaction> _globalReactions;
-        private readonly ConcurrentDictionary<ulong, ConcurrentDictionary<int, CustomReaction>> _guildReactions;
+        private ConcurrentDictionary<int, CustomReaction> _globalReactions;
+        private ConcurrentDictionary<ulong, ConcurrentDictionary<int, CustomReaction>> _guildReactions;
 
         public int Priority => -1;
         public ModuleBehaviorType BehaviorType => ModuleBehaviorType.Executor;
@@ -62,6 +63,10 @@ namespace NadekoBot.Modules.CustomReactions.Services
             _gperm = gperm;
 
             var sub = _cache.Redis.GetSubscriber();
+            sub.Subscribe(_client.CurrentUser.Id + "_crs.reload", (ch, msg) =>
+            {
+                ReloadInternal(bot.GetCurrentGuildConfigs());
+            }, StackExchange.Redis.CommandFlags.FireAndForget);
             sub.Subscribe(_client.CurrentUser.Id + "_gcr.added", (ch, msg) =>
             {
                 var cr = JsonConvert.DeserializeObject<CustomReaction>(msg);
@@ -86,7 +91,23 @@ namespace NadekoBot.Modules.CustomReactions.Services
                 }
             }, StackExchange.Redis.CommandFlags.FireAndForget);
 
-            var guildItems = uow.CustomReactions.GetFor(bot.AllGuildConfigs.Select(x => x.GuildId));
+            ReloadInternal(bot.AllGuildConfigs, uow);
+
+             bot.JoinedGuild += Bot_JoinedGuild;
+            _client.LeftGuild += _client_LeftGuild;
+        }
+
+         private void ReloadInternal(IEnumerable<GuildConfig> allGuildConfigs)
+        {
+            using (var uow = _db.UnitOfWork)
+            {
+                ReloadInternal(allGuildConfigs, uow);
+            }
+        }
+
+         private void ReloadInternal(IEnumerable<GuildConfig> allGuildConfigs, IUnitOfWork uow)
+        {
+            var guildItems = uow.CustomReactions.GetFor(allGuildConfigs.Select(x => x.GuildId));
             _guildReactions = new ConcurrentDictionary<ulong, ConcurrentDictionary<int, CustomReaction>>(guildItems
                 .GroupBy(k => k.GuildId.Value)
                 .ToDictionary(g => g.Key, g => g.ToDictionary(x => x.Id, x => x).ToConcurrent()));
@@ -96,8 +117,6 @@ namespace NadekoBot.Modules.CustomReactions.Services
                 .ToDictionary(x => x.Id, x => x)
                 .ToConcurrent();
 
-            bot.JoinedGuild += Bot_JoinedGuild;
-            _client.LeftGuild += _client_LeftGuild;
         }
 
         private Task _client_LeftGuild(SocketGuild arg)
@@ -166,6 +185,15 @@ namespace NadekoBot.Modules.CustomReactions.Services
                         {
                             if (reaction.Response == "-")
                                 return null;
+                            //using (var uow = _db.UnitOfWork)
+                            //{
+                            //    var rObj = uow.CustomReactions.GetById(reaction.Id);
+                            //    if (rObj != null)
+                            //    {
+                            //        rObj.UseCount += 1;
+                            //        uow.Complete();
+                            //    }
+                            //}
                             return reaction;
                         }
                     }
@@ -233,11 +261,16 @@ namespace NadekoBot.Modules.CustomReactions.Services
                 }
                 catch (Exception ex)
                 {
-                    _log.Warn("Sending CREmbed failed");
-                    _log.Warn(ex);
+                    _log.Warn(ex.Message);
                 }
             }
             return false;
+        }
+
+        public void TriggerReloadCustomReactions()
+        {
+            var sub = _cache.Redis.GetSubscriber();
+            sub.Publish(_client.CurrentUser.Id + "_crs.reload", "");
         }
 
         public async Task<(bool Sucess, bool NewValue)> ToggleCrOptionAsync(int id, CrField field)
@@ -376,10 +409,10 @@ namespace NadekoBot.Modules.CustomReactions.Services
             using (var uow = _db.UnitOfWork)
             {
                 var cr = uow.CustomReactions.GetById(id);
-                if (cr.GuildId == guildId)
-                    return cr;
-                else
+                if (cr == null || cr.GuildId != guildId)
                     return null;
+                else
+                    return cr;
             }
         }
         public async Task<CustomReaction> DeleteCustomReactionAsync(ulong? guildId, int id)

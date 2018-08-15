@@ -12,6 +12,9 @@ using NadekoBot.Core.Services.Database.Models;
 using NadekoBot.Extensions;
 using NadekoBot.Modules.Administration.Services;
 
+/// <summary>
+/// TRANSITION TO SERVICE
+/// </summary>
 namespace NadekoBot.Modules.Administration
 {
     public partial class Administration : NadekoTopLevelModule<AdministrationService>
@@ -116,9 +119,16 @@ namespace NadekoBot.Modules.Administration
                     ChannelId = chId.Value,
                     State = s == State.Enable,
                 };
-                conf.DelMsgOnCmdChannels.Remove(obj);
+                var del = conf.DelMsgOnCmdChannels.FirstOrDefault(x => x == obj);
                 if (s != State.Inherit)
                     conf.DelMsgOnCmdChannels.Add(obj);
+                else
+                {
+                    if (del != null)
+                    {
+                        uow._context.Remove(del);
+                    }
+                }
 
                 await uow.CompleteAsync().ConfigureAwait(false);
             }

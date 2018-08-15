@@ -1,6 +1,7 @@
 ﻿using NadekoBot.Common.Collections;
 using System;
 using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations.Schema;
 
 namespace NadekoBot.Core.Services.Database.Models
 {
@@ -68,7 +69,7 @@ namespace NadekoBot.Core.Services.Database.Models
 
         public string MuteRoleName { get; set; }
         public bool CleverbotEnabled { get; set; }
-        public HashSet<Repeater> GuildRepeaters { get; set; } = new HashSet<Repeater>();
+        public List<Repeater> GuildRepeaters { get; set; } = new List<Repeater>();
 
         public AntiRaidSetting AntiRaidSetting { get; set; }
         public AntiSpamSetting AntiSpamSetting { get; set; }
@@ -100,8 +101,12 @@ namespace NadekoBot.Core.Services.Database.Models
         public bool NotifyStreamOffline { get; set; }
         public List<GroupName> SelfAssignableRoleGroupNames { get; set; }
     }
+
     public class GroupName : DbEntity
     {
+        public int GuildConfigId { get; set; }
+        public GuildConfig GuildConfig { get; set; }
+
         public int Number { get; set; }
         public string Name { get; set; }
     }
@@ -255,6 +260,17 @@ UserId.GetHashCode();
     public class FilterChannelId : DbEntity
     {
         public ulong ChannelId { get; set; }
+
+        public override bool Equals(object obj)
+        {
+            return obj is FilterChannelId f
+                ? f.ChannelId == ChannelId
+                : false;
+        }
+        public override int GetHashCode()
+        {
+            return ChannelId.GetHashCode();
+        }
     }
 
     public class FilterLinksChannelId : DbEntity
