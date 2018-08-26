@@ -1,18 +1,19 @@
 ﻿using Discord;
 using Discord.Commands;
-using NadekoBot.Extensions;
-using System.Linq;
-using System.Threading.Tasks;
-using NadekoBot.Core.Services;
-using NadekoBot.Core.Services.Database.Models;
-using System.Collections.Generic;
+using Discord.WebSocket;
 using NadekoBot.Common;
 using NadekoBot.Common.Attributes;
-using System;
-using NadekoBot.Modules.Gambling.Services;
-using NadekoBot.Core.Modules.Gambling.Common;
-using Discord.WebSocket;
 using NadekoBot.Core.Common;
+using NadekoBot.Core.Modules.Gambling.Common;
+using NadekoBot.Core.Services;
+using NadekoBot.Core.Services.Database.Models;
+using NadekoBot.Extensions;
+using NadekoBot.Modules.Gambling.Services;
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Numerics;
+using System.Threading.Tasks;
 
 namespace NadekoBot.Modules.Gambling
 {
@@ -44,17 +45,6 @@ namespace NadekoBot.Modules.Gambling
             {
                 return uow.DiscordUsers.GetUserCurrency(id);
             }
-        }
-
-        public long GetCurrency(IUser user)
-        {
-            long amount;
-            using (var uow = _db.UnitOfWork)
-            {
-                amount = uow.DiscordUsers.GetOrCreate(user).CurrencyAmount;
-                uow.Complete();
-            }
-            return amount;
         }
 
         [NadekoCommand, Usage, Description, Aliases]
@@ -159,10 +149,8 @@ namespace NadekoBot.Modules.Gambling
         [Priority(1)]
         public async Task Cash([Remainder] IUser user = null)
         {
-            if (user == null)
-                await ConfirmLocalized("has", Format.Bold(Context.User.ToString()), $"{GetCurrency(Context.User)} {CurrencySign}").ConfigureAwait(false);
-            else
-                await ReplyConfirmLocalized("has", Format.Bold(user.ToString()), $"{GetCurrency(user)} {CurrencySign}").ConfigureAwait(false);
+            user = user ?? Context.User;
+            await ConfirmLocalized("has", Format.Bold(user.ToString()), $"{GetCurrency(user.Id)} {CurrencySign}").ConfigureAwait(false);
         }
 
         [NadekoCommand, Usage, Description, Aliases]

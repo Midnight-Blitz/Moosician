@@ -6,7 +6,7 @@ using NadekoBot.Extensions;
 using System.Threading.Tasks;
 using NadekoBot.Common.Attributes;
 using Discord.WebSocket;
-using NadekoBot.Modules.Utility.Services;
+///using NadekoBot.Modules.Cantrips.Services;
 using NadekoBot.Core.Services.Database.Models;
 using System.Text;
 using System.Linq;
@@ -25,9 +25,9 @@ using NadekoBot.Core.Services.Impl;
 using Newtonsoft.Json;
 /// I don't know for sure what to use here yet. This will be cleaned up when the command is finished.
 
-namespace NadekoBot.Modules.Utility
+namespace NadekoBot.Modules.Cantrips
 {
-    public partial class Utility
+    public partial class Cantrips
     {
         [Group]
         public class Respects : NadekoSubmodule

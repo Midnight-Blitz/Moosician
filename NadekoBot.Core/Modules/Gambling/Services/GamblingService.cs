@@ -97,6 +97,7 @@ namespace NadekoBot.Modules.Gambling.Services
             public decimal OnePercent { get; set; }
             public long Bot { get; set; }
         }
+
         public EconomyResult GetEconomy()
         {
             if (_cache.TryGetEconomy(out var data))
@@ -107,19 +108,23 @@ namespace NadekoBot.Modules.Gambling.Services
                 }
                 catch { }
             }
+
             decimal cash;
             decimal onePercent;
             decimal planted;
             decimal waifus;
             long bot;
+
             using (var uow = _db.UnitOfWork)
             {
-                cash = uow.DiscordUsers.GetTotalCurrency(_client.CurrentUser.Id);
+                cash = uow.DiscordUsers.GetTotalCurrency();
                 onePercent = uow.DiscordUsers.GetTopOnePercentCurrency(_client.CurrentUser.Id);
                 planted = uow.PlantedCurrency.GetTotalPlanted();
                 waifus = uow.Waifus.GetTotalValue();
                 bot = uow.DiscordUsers.GetUserCurrency(_client.CurrentUser.Id);
+                cash = cash - bot;
             }
+
             var result = new EconomyResult
             {
                 Cash = cash,

@@ -1606,8 +1606,8 @@
       "{0}ani aquarion evol"
     ]
   },
-  "imdb": {
-    "Cmd": "imdb omdb",
+  "movie": {
+    "Cmd": "movie imdb",
     "Desc": "Queries omdb for movies or series, show first result.",
     "Usage": [
       "{0}imdb My Little Pony Movie"
@@ -1649,14 +1649,7 @@
     ]
   },
   "image": {
-    "Cmd": "image img",
-    "Desc": "Pulls the first image found using a search parameter. Use `{0}rimg` for different results.",
-    "Usage": [
-      "{0}img cute kitten"
-    ]
-  },
-  "randomimage": {
-    "Cmd": "randomimage rimg",
+    "Cmd": "image img rimg",
     "Desc": "Pulls a random image using a search parameter.",
     "Usage": [
       "{0}rimg cute kitten"
@@ -3518,13 +3511,20 @@
     "desc": "Breakdown of the current state of the bot's economy. Updates every 3 minutes.",
     "usage": [
       "{0}economy"
-    ],
+    ]
+  },
     "deleteunusedcrnq": {
       "cmd": "deleteunusedcr",
       "desc": "Deletes all quotes and custom reactions which are older than 60 days and haven't been used a single time.",
       "usage": [
         "{0}deleteunusedcr"
       ]
-    }
+    },
+  "spellcast": {
+    "cmd": "cast use",
+    "desc": "Casts a spell from D&D 5e or Pathfinder on the selected target. Attacks, Saves, and Bonuses are calculated by Moo's casting bonuses in a 5e rolling manner (for simplicity.) Both sides. (Currently doesn't work.)",
+    "usage": [
+      "{0}cast OCisbestpony Fireball"
+    ]
   }
 }

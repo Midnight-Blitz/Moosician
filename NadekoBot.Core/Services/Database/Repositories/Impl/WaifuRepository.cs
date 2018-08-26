@@ -20,11 +20,17 @@ namespace NadekoBot.Core.Services.Database.Repositories.Impl
                             .Include(wi => wi.Affinity)
                             .Include(wi => wi.Claimer)
                             .Include(wi => wi.Items)
-                            .FirstOrDefault(wi => wi.Waifu.UserId == userId);
+                            .FirstOrDefault(wi => wi.WaifuId == _context.Set<DiscordUser>()
+                                .Where(x => x.UserId == userId)
+                                .Select(x => x.Id)
+                                .FirstOrDefault());
             }
 
             return includes(_set)
-               .FirstOrDefault(wi => wi.Waifu.UserId == userId);
+                .FirstOrDefault(wi => wi.WaifuId == _context.Set<DiscordUser>()
+                    .Where(x => x.UserId == userId)
+                    .Select(x => x.Id)
+                    .FirstOrDefault());
         }
 
         public IEnumerable<string> GetWaifuNames(ulong userId)
@@ -96,9 +102,6 @@ WHERE UserId = (SELECT Id from DiscordUser WHERE UserId={userId}) AND
         public WaifuInfoStats GetWaifuInfo(ulong userId)
         {
             return _set
-                //.Include(x => x.Waifu)
-                //.Where(x => x.Waifu.UserId == userId)
-                //.Include(w => w.Items)
                 .Where(w => w.WaifuId == _context.Set<DiscordUser>()
                     .Where(u => u.UserId == userId)
                     .Select(u => u.Id).FirstOrDefault())
