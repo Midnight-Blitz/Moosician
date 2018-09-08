@@ -3520,7 +3520,7 @@
         "{0}deleteunusedcr"
       ]
     },
-  "spellcast": {
+  "spell": {
     "cmd": "cast use",
     "desc": "Casts a spell from D&D 5e or Pathfinder on the selected target. Attacks, Saves, and Bonuses are calculated by Moo's casting bonuses in a 5e rolling manner (for simplicity.) Both sides. (Currently doesn't work.)",
     "usage": [

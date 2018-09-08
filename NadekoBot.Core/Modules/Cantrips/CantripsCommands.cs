@@ -37,7 +37,7 @@ namespace NadekoBot.Modules.Cantrips
             private readonly IImageCache _images;
             private static readonly NadekoRandom _rng = new NadekoRandom();
 
-            public NoContext (IBotCredentials creds, IDataCache data)
+            public NoContext(IBotCredentials creds, IDataCache data)
             {
                 _creds = creds;
                 _images = data.LocalImages;
@@ -53,6 +53,7 @@ namespace NadekoBot.Modules.Cantrips
             }
 
             [NadekoCommand, Usage, Description, Aliases]
+            [RequireContext(ContextType.Guild)]
             public async Task Blackmail()
             {
                 ///    var file = GetRandomBlackmail();
