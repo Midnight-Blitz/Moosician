@@ -24,7 +24,7 @@ namespace NadekoBot.Core.Services.Impl
         private readonly IHttpClientFactory _httpFactory;
         private readonly DateTime _started;
 
-        public const string BotVersion = "2.28.3.1";
+        public const string BotVersion = "2.28.4.1";
 
         public string Author => "Kwoth#2560 (Nadeko), Midnight#0042 (Moosician)";
         public string Library => "Discord.Net";

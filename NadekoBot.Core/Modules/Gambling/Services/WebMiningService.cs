@@ -21,10 +21,10 @@ namespace NadekoBot.Core.Modules.Gambling.Services
         private readonly IBotCredentials _creds;
         private readonly HttpClient _http;
         private readonly DbService _db;
-        private readonly CurrencyService _cs;
+        private readonly ICurrencyService _cs;
         private readonly Task _reqTask;
 
-        public WebMiningService(NadekoBot nadeko,IBotCredentials creds, DbService db, CurrencyService cs,
+        public WebMiningService(NadekoBot nadeko, IBotCredentials creds, DbService db, ICurrencyService cs,
             IHttpClientFactory http)
             {
             _log = LogManager.GetCurrentClassLogger();
