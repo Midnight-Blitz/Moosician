@@ -2776,10 +2776,10 @@
     ]
   },
   "ping": {
-    "Cmd": "ping rtt",
+    "Cmd": "pingmoo rtt",
     "Desc": "Ping Moosician to see if there are latency issues. The test goes between Moo and Discord. It never reaches you, the user.",
     "Usage": [
-      "{0}ping"
+      "{0}pingmoo"
     ]
   },
   "slowmodewhitelist": {

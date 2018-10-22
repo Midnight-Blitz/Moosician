@@ -231,7 +231,7 @@ namespace NadekoBot.Modules.Searches
             query = WebUtility.UrlEncode(oterms).Replace(' ', '+');
             try
             {
-                var res = await _google.GetImageAsync(oterms, new NadekoRandom().Next(0, 50)).ConfigureAwait(false);
+                var res = await _google.GetImageAsync(oterms).ConfigureAwait(false);
                 var embed = new EmbedBuilder()
                     .WithOkColor()
                     .WithAuthor(eab => eab.WithName(GetText("image_search_for") + " " + oterms.TrimTo(50))
@@ -363,7 +363,6 @@ namespace NadekoBot.Modules.Searches
                             $"[{Format.Bold(res?.Title)}]({(await _google.ShortenUrl(res?.Link).ConfigureAwait(false))})\n{res?.Text?.TrimTo(400 - res.Value.Title.Length - res.Value.Link.Length)}\n\n"))
                         .ConfigureAwait(false);
                     var descStr = string.Concat(desc);
-                    _log.Info(descStr.Length);
                     await Context.Channel.EmbedAsync(embed.WithDescription(descStr)).ConfigureAwait(false);
                 }
             }
@@ -739,7 +738,7 @@ namespace NadekoBot.Modules.Searches
                 return true;
             }
 
-            await ch.SendErrorAsync(GetText("specify_search_params")).ConfigureAwait(false);
+            await ErrorLocalized("specify_search_params").ConfigureAwait(false);
             return false;
         }
     }
