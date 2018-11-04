@@ -28,27 +28,29 @@ using Configuration = AngleSharp.Configuration;
 
 namespace NadekoBot.Modules.Cantrips
 {
-    public partial class Cantrips : NadekoTopLevelModule
+    public partial class Cantrips
     {
         [Group]
-        public class NoContext : NadekoSubmodule
+        public class Birb : NadekoSubmodule
         {
             private readonly IBotCredentials _creds;
             private readonly IImageCache _images;
             private static readonly NadekoRandom _rng = new NadekoRandom();
 
-            public NoContext(IBotCredentials creds, IDataCache data)
+            public Birb(IBotCredentials creds, IDataCache data)
             {
                 _creds = creds;
                 _images = data.LocalImages;
             }
 
-            /*[NadekoCommand, Usage, Description, Aliases]
+            /*public Uri Birb();
+            [NadekoCommand, Usage, Description, Aliases]
             [RequireContext(ContextType.Guild)]
             public Task Birdup()
             {
 
             }*/
+
 
             ///public Uri GetRandomBlackmail()
             public byte[] GetRandomBlackmail()

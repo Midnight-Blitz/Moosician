@@ -46,19 +46,38 @@ namespace NadekoBot.Modules.Searches
 
         //for anonymasen :^)
         [NadekoCommand, Usage, Description, Aliases]
-        public async Task Rip([Remainder]IGuildUser usr)
+        public async Task Rip([Remainder] IGuildUser usr)
         {
-            var av = usr.RealAvatarUrl();
-            if (av == null)
-                return;
-            using (var picStream = await _service.GetRipPictureAsync(usr.Nickname ?? usr.Username, av).ConfigureAwait(false))
             {
-                await Context.Channel.SendFileAsync(
-                    picStream,
-                    "rip.png",
-                    $"Rip {Format.Bold(usr.ToString())} \n\t- " +
-                        Format.Italics(Context.User.ToString()))
-                    .ConfigureAwait(false);
+                var av = usr.RealAvatarUrl();
+                //Nothing provided check.
+                if (av == null)
+                    return;
+                else
+                    using (var picStream = await _service.GetRipPictureAsync(usr.Nickname ?? usr.Username, av).ConfigureAwait(false))
+                    {
+                        //Mary Check
+                        /*
+                        if (usr = "173622857321021450")
+                        {
+                            var embed = new EmbedBuilder()
+                            .WithOkColor()
+                            .WithTitle("Bippy, no!")
+                            .WithDescription("You have so much to live for!");
+                            await Context.Channel.EmbedAsync(embed)
+                            .ConfigureAwait(false);
+                            return;
+                        }
+                        else*/
+                        {
+                            await Context.Channel.SendFileAsync(
+                                picStream,
+                                "rip.png",
+                                $"Rip {Format.Bold(usr.ToString())} \n\t- " +
+                                    Format.Italics(Context.User.ToString()))
+                                .ConfigureAwait(false);
+                        }
+                    }
             }
         }
 

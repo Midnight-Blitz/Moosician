@@ -1642,10 +1642,10 @@
     ]
   },
   "randombird": {
-    "Cmd": "randombird randombirb birb bird",
-    "Desc": "Alternatives: `.bird`, `.birb`. Shows a random bird image.",
+    "Cmd": "randombird bird",
+    "Desc": "Shows a random *real* bird image.",
     "Usage": [
-      "{0}birb"
+      "{0}bird"
     ]
   },
   "image": {
@@ -3525,6 +3525,13 @@
     "desc": "Casts a spell from D&D 5e or Pathfinder on the selected target. Attacks, Saves, and Bonuses are calculated by Moo's casting bonuses in a 5e rolling manner (for simplicity.) Both sides. (Currently doesn't work.)",
     "usage": [
       "{0}cast OCisbestpony Fireball"
+    ]
+  },
+  "birdup": {
+    "cmd": "birb",
+    "desc": "Can't decide? Post a random birb emote with this!",
+    "usage": [
+      "{0}birb"
     ]
   }
 }
