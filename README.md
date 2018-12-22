@@ -1,7 +1,7 @@
 ![img](https://ci.appveyor.com/api/projects/status/3rdcy7oo2rom5uh4?svg=true)
 
 # About Moosician
-A C# Discord bot based on https://github.com/Kwoth/NadekoBot specifically designed for Them's Tabletop Herds: A D&D Discord group from the Them's Fighting Herds community.
+A C# Discord bot based on https://gitlab.com/Kwoth/nadekobot specifically designed for Them's Tabletop Herds: A D&D Discord group from the Them's Fighting Herds community.
 
 ## Disclaimer
 I do not own NadekoBot, nor do I own the source code behind it. NadekoBot, the source, was made by Kwoth and a great group of  contributors. They're the real heroes.
