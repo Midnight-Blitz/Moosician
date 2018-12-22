@@ -156,6 +156,7 @@ namespace NadekoBot.Modules.Searches
         }
 
         [NadekoCommand, Usage, Description, Aliases]
+        [NoPublicBot]
         public async Task Time([Remainder] string query)
         {
             if (!await ValidateQuery(Context.Channel, query).ConfigureAwait(false))

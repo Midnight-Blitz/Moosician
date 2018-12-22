@@ -43,6 +43,7 @@
   
   <ItemGroup>
     <Folder Include="Modules\Gambling\Common\CurrencyEvents\" />
+    <Folder Include="Modules\Nsfw\Exceptions\" />
   </ItemGroup>
 <!--
   <ItemGroup>

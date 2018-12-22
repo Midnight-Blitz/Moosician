@@ -161,14 +161,6 @@
       "{0}rmpl"
     ]
   },
-  "slowmode": {
-    "Cmd": "slowmode",
-    "Desc": "Toggles slowmode. Slowmode deletes any excess messages users type over the specified limit of messages per X seconds. To enable, specify a number of messages (-m) each user can send, and an interval in seconds (-i). Disable by specifying no parameters.",
-    "Usage": [
-      "{0}slowmode -i 1 -m 5",
-      "{0}slowmode"
-    ]
-  },
   "vcrolelist": {
     "Cmd": "vcrolelist",
     "Desc": "Shows a list of currently set voice channel roles.",
@@ -494,12 +486,14 @@
   },
   "prune": {
     "Cmd": "prune purge",
-    "Desc": "`{0}prune` removes Moo's last 100 messages. (Can be used by anyone.) `{0}prune X` removes last `X` number of messages from the channel (up to 100). `{0}prune @Someone` removes all of 'Someone's' messages in the last 100 messages. `{0}prune @Someone X` removes last `X` number of 'Someone's' messages in the channel.",
+    "Desc": "`{0}prune` removes Moo's last 100 messages. (Can be used by anyone.) `{0}prune X` removes last `X` number of messages from the channel (up to 100). `{0}prune @Someone` removes all of 'Someone's' messages in the last 100 messages. `{0}prune @Someone X` removes last `X` number of 'Someone's' messages in the channel. You can use the `-s` / `--safe` parameter at the end to only prune messages that are not pinned.",
     "Usage": [
       "{0}prune",
+      "{0}prune -s",
       "{0}purge 5",
       "{0}prune @Someone",
-      "{0}purge @Someone X"
+      "{0}purge @Someone 8",
+      "{0}purge @Someone 10 -s"
     ]
   },
   "die": {
@@ -1368,7 +1362,7 @@
     ]
   },
   "reptcursong": {
-    "Cmd": "repeat rs repeatsong",
+    "Cmd": "loop repeat rs repeatsong",
     "Desc": "Also valid: `{0}repeatsong`. Toggles repeat of the currently playing song.",
     "Usage": [
       "{0}repeat",
@@ -1376,7 +1370,7 @@
     ]
   },
   "repeatpl": {
-    "Cmd": "repeatall rpa",
+    "Cmd": "loopall repeatall rpa",
     "Desc": "Toggles repeat of all songs in the queue (every song that finishes is added to the end of the queue).",
     "Usage": [
       "{0}repeatall",
@@ -2243,14 +2237,6 @@
       "{0}hangmanstop"
     ]
   },
-  "overwatch": {
-    "Cmd": "overwatch ow",
-    "Desc": "Show's basic stats on a player (competitive rank, playtime, level etc) Region codes are: `eu` `us` `cn` `kr`",
-    "Usage": [
-      "{0}ow us Battletag#1337",
-      "{0}overwatch eu Battletag#2016"
-    ]
-  },
   "acro": {
     "Cmd": "acrophobia acro",
     "Desc": "Starts an Acrophobia game.",
@@ -2780,14 +2766,6 @@
     "Desc": "Ping Moosician to see if there are latency issues. The test goes between Moo and Discord. It never reaches you, the user.",
     "Usage": [
       "{0}pingmoo"
-    ]
-  },
-  "slowmodewhitelist": {
-    "Cmd": "slowmodewl",
-    "Desc": "Ignores a role or a user from the slowmode feature.",
-    "Usage": [
-      "{0}slowmodewl SomeRole",
-      "{0}slowmodewl AdminDude"
     ]
   },
   "time": {
@@ -3334,13 +3312,6 @@
     "desc": "Returns a list of the main Path of Exile leagues.",
     "usage": [
       "{0}poel"
-    ]
-  },
-  "pathofexileitem": {
-    "cmd": "pathofexileitem poei",
-    "desc": "Searches for a Path of Exile item from the Path of Exile GamePedia.",
-    "usage": [
-      "{0}poei \"Quill Rain\""
     ]
   },
   "pathofexilecurrency": {
