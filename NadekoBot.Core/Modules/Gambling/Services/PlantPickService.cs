@@ -10,7 +10,7 @@ using NadekoBot.Core.Services.Impl;
 using NadekoBot.Extensions;
 using NLog;
 using SixLabors.Fonts;
-using SixLabors.ImageSharp.PixelFormats;
+using SixLabors.ImageSharp.PixelFormats; //Outdated?
 using SixLabors.ImageSharp.Processing;
 using SixLabors.Primitives;
 using System;
@@ -38,6 +38,7 @@ namespace NadekoBot.Modules.Gambling.Services
         public readonly ConcurrentHashSet<ulong> _generationChannels = new ConcurrentHashSet<ulong>();
         //channelId/last generation
         public ConcurrentDictionary<ulong, DateTime> LastGenerations { get; } = new ConcurrentDictionary<ulong, DateTime>();
+        private readonly object pickLock = new object();
 
         public PlantPickService(DbService db, CommandHandler cmd, NadekoBot bot, NadekoStrings strings,
             IDataCache cache, FontProvider fonts, IBotConfigProvider bc, ICurrencyService cs,
@@ -253,7 +254,11 @@ namespace NadekoBot.Modules.Gambling.Services
             {
                 // this method will sum all plants with that password, 
                 // remove them, and get messageids of the removed plants
-                (amount, ids) = uow.PlantedCurrency.RemoveSumAndGetMessageIdsFor(ch.Id, pass);
+                lock (pickLock)
+                {
+                    (amount, ids) = uow.PlantedCurrency.RemoveSumAndGetMessageIdsFor(ch.Id, pass);
+                }
+
                 if (amount > 0)
                 {
                     // give the picked currency to the user
