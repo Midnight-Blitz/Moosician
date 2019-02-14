@@ -1,14 +1,14 @@
 ﻿using Discord;
 using Discord.Commands;
 using Discord.WebSocket;
-using NadekoBot.Extensions;
+using NadekoBot.Common.Attributes;
+using NadekoBot.Core.Common.TypeReaders.Models;
 using NadekoBot.Core.Services.Database.Models;
+using NadekoBot.Extensions;
+using NadekoBot.Modules.Administration.Services;
+using System;
 using System.Linq;
 using System.Threading.Tasks;
-using NadekoBot.Common.Attributes;
-using NadekoBot.Modules.Administration.Services;
-using NadekoBot.Core.Common.TypeReaders.Models;
-using System;
 
 namespace NadekoBot.Modules.Administration
 {
@@ -32,7 +32,7 @@ namespace NadekoBot.Modules.Administration
                 if (Context.User.Id != user.Guild.OwnerId
                     && (user.GetRoles().Select(r => r.Position).Max() >= ((IGuildUser)Context.User).GetRoles().Select(r => r.Position).Max()))
                 {
-                    await ReplyErrorLocalized("hierarchy").ConfigureAwait(false);
+                    await ReplyErrorLocalizedAsync("hierarchy").ConfigureAwait(false);
                     return;
                 }
                 try
@@ -56,17 +56,17 @@ namespace NadekoBot.Modules.Administration
                 catch (Exception ex)
                 {
                     _log.Warn(ex.Message);
-                    await ReplyErrorLocalized("cant_apply_punishment").ConfigureAwait(false);
+                    await ReplyErrorLocalizedAsync("cant_apply_punishment").ConfigureAwait(false);
                     return;
                 }
 
                 if (punishment == null)
                 {
-                    await ReplyConfirmLocalized("user_warned", Format.Bold(user.ToString())).ConfigureAwait(false);
+                    await ReplyConfirmLocalizedAsync("user_warned", Format.Bold(user.ToString())).ConfigureAwait(false);
                 }
                 else
                 {
-                    await ReplyConfirmLocalized("user_warned_and_punished", Format.Bold(user.ToString()), Format.Bold(punishment.ToString())).ConfigureAwait(false);
+                    await ReplyConfirmLocalizedAsync("user_warned_and_punished", Format.Bold(user.ToString()), Format.Bold(punishment.ToString())).ConfigureAwait(false);
                 }
             }
 
@@ -184,18 +184,18 @@ namespace NadekoBot.Modules.Administration
                 var userStr = Format.Bold((Context.Guild as SocketGuild)?.GetUser(userId)?.ToString() ?? userId.ToString());
                 if (index == 0)
                 {
-                    await ReplyConfirmLocalized("warnings_cleared", userStr).ConfigureAwait(false);
+                    await ReplyConfirmLocalizedAsync("warnings_cleared", userStr).ConfigureAwait(false);
                 }
                 else
                 {
                     if (success)
                     {
-                        await ReplyConfirmLocalized("warning_cleared", Format.Bold(index.ToString()), userStr)
+                        await ReplyConfirmLocalizedAsync("warning_cleared", Format.Bold(index.ToString()), userStr)
                             .ConfigureAwait(false);
                     }
                     else
                     {
-                        await ReplyErrorLocalized("warning_clear_fail").ConfigureAwait(false);
+                        await ReplyErrorLocalizedAsync("warning_clear_fail").ConfigureAwait(false);
                     }
                 }
             }
@@ -209,7 +209,7 @@ namespace NadekoBot.Modules.Administration
                 if (!success)
                     return;
 
-                await ReplyConfirmLocalized("warn_punish_set",
+                await ReplyConfirmLocalizedAsync("warn_punish_set",
                     Format.Bold(punish.ToString()),
                     Format.Bold(number.ToString())).ConfigureAwait(false);
             }
@@ -224,7 +224,7 @@ namespace NadekoBot.Modules.Administration
                     return;
                 }
 
-                await ReplyConfirmLocalized("warn_punish_rem",
+                await ReplyConfirmLocalizedAsync("warn_punish_rem",
                     Format.Bold(number.ToString())).ConfigureAwait(false);
             }
 
@@ -259,7 +259,7 @@ namespace NadekoBot.Modules.Administration
                     return;
                 if (Context.User.Id != user.Guild.OwnerId && (user.GetRoles().Select(r => r.Position).Max() >= ((IGuildUser) Context.User).GetRoles().Select(r => r.Position).Max()))
                 {
-                    await ReplyErrorLocalized("hierarchy").ConfigureAwait(false);
+                    await ReplyErrorLocalizedAsync("hierarchy").ConfigureAwait(false);
                     return;
                 }
                 if (!string.IsNullOrWhiteSpace(msg))
@@ -283,6 +283,30 @@ namespace NadekoBot.Modules.Administration
                     .ConfigureAwait(false);
             }
 
+
+            [NadekoCommand, Usage, Description, Aliases]
+            [RequireContext(ContextType.Guild)]
+            [RequireUserPermission(GuildPermission.BanMembers)]
+            [RequireBotPermission(GuildPermission.BanMembers)]
+            [Priority(2)]
+            public async Task Ban(ulong userId, [Remainder] string msg = null)
+            {
+                var user = await Context.Guild.GetUserAsync(userId);
+                if (user is null)
+                {
+                    await Context.Guild.AddBanAsync(userId, 7, Context.User.ToString() + " | " + msg);
+
+                    await Context.Channel.EmbedAsync(new EmbedBuilder().WithOkColor()
+                            .WithTitle("⛔️ " + GetText("banned_user"))
+                            .AddField(efb => efb.WithName("ID").WithValue(userId.ToString()).WithIsInline(true)))
+                        .ConfigureAwait(false);
+                }
+                else
+                {
+                    await Ban(user, msg);
+                }
+            }
+
             [NadekoCommand, Usage, Description, Aliases]
             [RequireContext(ContextType.Guild)]
             [RequireUserPermission(GuildPermission.BanMembers)]
@@ -292,7 +316,7 @@ namespace NadekoBot.Modules.Administration
             {
                 if (Context.User.Id != user.Guild.OwnerId && (user.GetRoles().Select(r => r.Position).Max() >= ((IGuildUser)Context.User).GetRoles().Select(r => r.Position).Max()))
                 {
-                    await ReplyErrorLocalized("hierarchy").ConfigureAwait(false);
+                    await ReplyErrorLocalizedAsync("hierarchy").ConfigureAwait(false);
                     return;
                 }
                 if (!string.IsNullOrWhiteSpace(msg))
@@ -327,7 +351,7 @@ namespace NadekoBot.Modules.Administration
 
                 if (bun == null)
                 {
-                    await ReplyErrorLocalized("user_not_found").ConfigureAwait(false);
+                    await ReplyErrorLocalizedAsync("user_not_found").ConfigureAwait(false);
                     return;
                 }
 
@@ -346,7 +370,7 @@ namespace NadekoBot.Modules.Administration
 
                 if (bun == null)
                 {
-                    await ReplyErrorLocalized("user_not_found").ConfigureAwait(false);
+                    await ReplyErrorLocalizedAsync("user_not_found").ConfigureAwait(false);
                     return;
                 }
 
@@ -357,7 +381,7 @@ namespace NadekoBot.Modules.Administration
             {
                 await Context.Guild.RemoveBanAsync(user).ConfigureAwait(false);
 
-                await ReplyConfirmLocalized("unbanned_user", Format.Bold(user.ToString())).ConfigureAwait(false);
+                await ReplyConfirmLocalizedAsync("unbanned_user", Format.Bold(user.ToString())).ConfigureAwait(false);
             }
 
             [NadekoCommand, Usage, Description, Aliases]
@@ -369,7 +393,7 @@ namespace NadekoBot.Modules.Administration
             {
                 if (Context.User.Id != user.Guild.OwnerId && user.GetRoles().Select(r => r.Position).Max() >= ((IGuildUser)Context.User).GetRoles().Select(r => r.Position).Max())
                 {
-                    await ReplyErrorLocalized("hierarchy").ConfigureAwait(false);
+                    await ReplyErrorLocalizedAsync("hierarchy").ConfigureAwait(false);
                     return;
                 }
 
@@ -404,7 +428,7 @@ namespace NadekoBot.Modules.Administration
             {
                 if (Context.Message.Author.Id != user.Guild.OwnerId && user.GetRoles().Select(r => r.Position).Max() >= ((IGuildUser)Context.User).GetRoles().Select(r => r.Position).Max())
                 {
-                    await ReplyErrorLocalized("hierarchy").ConfigureAwait(false);
+                    await ReplyErrorLocalizedAsync("hierarchy").ConfigureAwait(false);
                     return;
                 }
                 if (!string.IsNullOrWhiteSpace(msg))

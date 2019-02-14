@@ -1,14 +1,15 @@
-﻿using Microsoft.EntityFrameworkCore;
-using System.Collections.Generic;
-using System.Linq;
+﻿using Microsoft.Data.Sqlite;
+using Microsoft.EntityFrameworkCore;
+using Microsoft.EntityFrameworkCore.Design;
 using NadekoBot.Core.Services.Database.Models;
+using NadekoBot.Core.Services.Impl;
 using NadekoBot.Extensions;
 using System;
-using Microsoft.EntityFrameworkCore.Design;
-using Microsoft.Data.Sqlite;
+using System.Collections.Generic;
 using System.IO;
+using System.Linq;
 ///using Microsoft.Extensions.Logging;
-using NadekoBot.Core.Services.Impl;
+
 
 namespace NadekoBot.Core.Services.Database
 {
@@ -29,11 +30,12 @@ namespace NadekoBot.Core.Services.Database
 
     public class NadekoContext : DbContext
     {
-        public DbSet<Quote> Quotes { get; set; }
+        public DbSet<BotConfig> BotConfig { get; set; }
         public DbSet<GuildConfig> GuildConfigs { get; set; }
+
+        public DbSet<Quote> Quotes { get; set; }
         public DbSet<Reminder> Reminders { get; set; }
         public DbSet<SelfAssignedRole> SelfAssignableRoles { get; set; }
-        public DbSet<BotConfig> BotConfig { get; set; }
         public DbSet<MusicPlaylist> MusicPlaylists { get; set; }
         public DbSet<CustomReaction> CustomReactions { get; set; }
         public DbSet<CurrencyTransaction> CurrencyTransactions { get; set; }
@@ -43,6 +45,7 @@ namespace NadekoBot.Core.Services.Database
         public DbSet<UserXpStats> UserXpStats { get; set; }
         public DbSet<ClubInfo> Clubs { get; set; }
         ///public DbSet<Respects> Respect { get; set; }
+        ///public DbSet<Cast> Cast { get; set; }
 
         //logging
         public DbSet<LogSetting> LogSettings { get; set; }

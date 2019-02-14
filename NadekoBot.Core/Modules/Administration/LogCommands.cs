@@ -33,9 +33,9 @@ namespace NadekoBot.Modules.Administration
             {
                 await _service.LogServer(Context.Guild.Id, Context.Channel.Id, action.Value).ConfigureAwait(false);
                 if (action.Value)
-                    await ReplyConfirmLocalized("log_all").ConfigureAwait(false);
+                    await ReplyConfirmLocalizedAsync("log_all").ConfigureAwait(false);
                 else
-                    await ReplyConfirmLocalized("log_disabled").ConfigureAwait(false);
+                    await ReplyConfirmLocalizedAsync("log_disabled").ConfigureAwait(false);
             }
 
             [NadekoCommand, Usage, Description, Aliases]
@@ -48,9 +48,9 @@ namespace NadekoBot.Modules.Administration
                 var removed = _service.LogIgnore(Context.Guild.Id, Context.Channel.Id);
 
                 if (!removed)
-                    await ReplyConfirmLocalized("log_ignore", Format.Bold(channel.Mention + "(" + channel.Id + ")")).ConfigureAwait(false);
+                    await ReplyConfirmLocalizedAsync("log_ignore", Format.Bold(channel.Mention + "(" + channel.Id + ")")).ConfigureAwait(false);
                 else
-                    await ReplyConfirmLocalized("log_not_ignore", Format.Bold(channel.Mention + "(" + channel.Id + ")")).ConfigureAwait(false);
+                    await ReplyConfirmLocalizedAsync("log_not_ignore", Format.Bold(channel.Mention + "(" + channel.Id + ")")).ConfigureAwait(false);
             }
 
             [NadekoCommand, Usage, Description, Aliases]
@@ -120,9 +120,9 @@ namespace NadekoBot.Modules.Administration
                 var val = _service.Log(Context.Guild.Id, Context.Channel.Id, type);
 
                 if (val)
-                await ReplyConfirmLocalized("log", Format.Bold(type.ToString())).ConfigureAwait(false);
+                await ReplyConfirmLocalizedAsync("log", Format.Bold(type.ToString())).ConfigureAwait(false);
                 else
-                    await ReplyConfirmLocalized("log_stop", Format.Bold(type.ToString())).ConfigureAwait(false);
+                    await ReplyConfirmLocalizedAsync("log_stop", Format.Bold(type.ToString())).ConfigureAwait(false);
             }
         }
     }

@@ -859,8 +859,8 @@
     ]
   },
   "cmdcooldown": {
-    "Cmd": "cmdcooldown cmdcd",
-    "Desc": "Sets a cooldown per user for a command. Set it to 0 to remove the cooldown.",
+    "Cmd": "cmdcooldown cmdcd cmcd",
+    "Desc": "Also valid: `.cmcd`. Sets a cooldown per user for a command. Set it to 0 to remove the cooldown.",
     "Usage": [
       "{0}cmdcd \"some cmd\" 5"
     ]
@@ -1022,7 +1022,7 @@
   },
   "give": {
     "Cmd": "give",
-    "Desc": "Gives someone a certain amount of cowbells. You can specify the reason after the mention.",
+    "Desc": "Gives someone a certain amount of MooCoins. You can specify the reason after the mention.",
     "Usage": [
       "{0}give 1 @SomeGuy",
       "{0}give 5 @OCisbestpony totally not a bribe"
@@ -1030,7 +1030,7 @@
   },
   "award": {
     "Cmd": "award",
-    "Desc": "Awards someone a certain amount of cowbells. You can specify the reason after the username. You can also specify a role name to award currency to all users in a role.",
+    "Desc": "Awards someone a certain amount of MooCoins. You can specify the reason after the username. You can also specify a role name to award currency to all users in a role.",
     "Usage": [
       "{0}award 100 @person",
       "{0}award 5 Players"
@@ -1038,28 +1038,28 @@
   },
   "take": {
     "Cmd": "steal",
-    "Desc": "Removes a certain amount of cowbells from someone.",
+    "Desc": "Removes a certain amount of MooCoins from someone.",
     "Usage": [
       "{0}steal 1 @SomeGuy"
     ]
   },
   "betroll": {
     "Cmd": "betroll br",
-    "Desc": "Bets a certain amount of cowbells and rolls a dice. Rolling over 66 yields x2 of your currency, over 90 - x4 and 100 x10.",
+    "Desc": "Bets a certain amount of MooCoins and rolls a dice. Rolling over 66 yields x2 of your currency, over 90 - x4 and 100 x10.",
     "Usage": [
       "{0}br 5"
     ]
   },
   "wheeloffortune": {
     "Cmd": "wheeloffortune wheel",
-    "Desc": "Bets a certain amount of cowbells on the wheel of fortune. Wheel can stop on one of many different multipliers. The amount won is rounded down to the nearest whole number.",
+    "Desc": "Bets a certain amount of MooCoins on the wheel of fortune. Wheel can stop on one of many different multipliers. The amount won is rounded down to the nearest whole number.",
     "Usage": [
       "{0}wheel 10"
     ]
   },
   "leaderboard": {
     "Cmd": "leaderboard lb",
-    "Desc": "Displays Moosician's cowbell leaderboard.",
+    "Desc": "Displays Moosician's MooCoin leaderboard.",
     "Usage": [
       "{0}lb"
     ]
@@ -1116,7 +1116,7 @@
   },
   "pick": {
     "Cmd": "take",
-    "Desc": "Takes the cowbells placed in this channel. If the plant has a password, you need to specify it. `Spam = Loss of command privelage.`",
+    "Desc": "Takes the MooCoins placed in this channel. If the plant has a password, you need to specify it. `Spam = Loss of command privelage.`",
     "Usage": [
       "{0}take",
       "{0}take passwd"
@@ -1124,7 +1124,7 @@
   },
   "plant": {
     "Cmd": "drop",
-    "Desc": "Spend an amount of cowbells to drop it into this channel for others to fight over. Default is 1. You can specify the password after the amount. Password has to be alphanumeric and it will be trimmed down to 10 characters if it's longer.",
+    "Desc": "Spend an amount of MooCoins to drop it into this channel for others to fight over. Default is 1. You can specify the password after the amount. Password has to be alphanumeric and it will be trimmed down to 10 characters if it's longer.",
     "Usage": [
       "{0}drop",
       "{0}drop 5",
@@ -1133,7 +1133,7 @@
   },
   "gencurrency": {
     "Cmd": "gencurrency gc",
-    "Desc": "Toggles cowbell generation on this channel. Every posted message will have chance to spawn cowbells. Chance and number is specified by Midnight. (Default is 2%)",
+    "Desc": "Toggles MooCoin generation on this channel. Every posted message will have chance to spawn MooCoins. Chance and number is specified by Midnight. (Default is 2%)",
     "Usage": [
       "{0}gc"
     ]
@@ -1871,16 +1871,16 @@
     ]
   },
   "cash": {
-    "Cmd": "$ currency $$ $$$ cash bells",
-    "Desc": "Also valid: `{0}$$`, `{0}$$$, `{0}cash`, `{0}bells`. Check how much currency a person has. (Defaults to yourself)",
+    "Cmd": "$ currency $$ $$$ cash moocoins moocoin",
+    "Desc": "Also valid: `{0}$$`, `{0}$$$, `{0}cash`, `{0}moocoins`, `moocoin`. Check how many MooCoins someone has. (Defaults to yourself)",
     "Usage": [
       "{0}$",
-      "{0}bells @SomeGuy"
+      "{0}moocoins @SomeGuy"
     ]
   },
   "currencytransactions": {
     "Cmd": "curtrs",
-    "Desc": "Shows your cowbell transactions on the specified page. Bot owners can see other people's transactions.",
+    "Desc": "Shows your MooCoin transactions on the specified page. Bot owners can see other people's transactions.",
     "Usage": [
       "{0}curtrs 2",
       "{0}curtrs @anyone 2"
@@ -2393,7 +2393,7 @@
   },
   "eventstart": {
     "Cmd": "eventstart",
-    "Desc": "Starts a server event for the sake of Cowbells and glory. Events: `reaction`, `gamestatus`",
+    "Desc": "Starts a server event for the sake of MooCoins and glory. Events: `reaction`, `gamestatus`",
     "Usage": [
       "{0}startevent reaction",
       "{0}eventstart reaction -d 1 -a 50 --pot-size 1500"
@@ -2430,7 +2430,7 @@
   },
   "waifuclaim": {
     "Cmd": "claimwaifu claim",
-    "Desc": "Claim a waifu for yourself by spending cowbells.  You must spend at least 10% more than said waifu's current value unless the waifu in question set `{0}affinity` towards you prior to using this command. (Default minimum: 50)",
+    "Desc": "Claim a waifu for yourself by spending MooCoins.  You must spend at least 10% more than said waifu's current value unless the waifu in question set `{0}affinity` towards you prior to using this command. (Default minimum: 50)",
     "Usage": [
       "{0}claim 50 @Himesama"
     ]
@@ -2600,7 +2600,7 @@
   },
   "lucky7": {
     "Cmd": "lucky7 l7",
-    "Desc": "Bet cowbells on the game and start rolling 3 sided dice. At any point you can choose to [m]ove (roll again) or [s]tay (get the amount bet times the current multiplier).",
+    "Desc": "Bet MooCoins on the game and start rolling 3 sided dice. At any point you can choose to [m]ove (roll again) or [s]tay (get the amount bet times the current multiplier).",
     "Usage": [
       "{0}l7 10",
       "{0}l7 move",
@@ -3214,7 +3214,7 @@
   },
   "deletecurrency": {
     "cmd": "deletecurrency",
-    "desc": "Deletes everything from Currency and CurrencyTransactions. (Everyone loses cowbells and such.)",
+    "desc": "Deletes everything from Currency and CurrencyTransactions. (Everyone loses MooCoins and such.)",
     "usage": [
       "{0}deletecurrency"
     ]
@@ -3249,26 +3249,26 @@
     ]
   },
   "timelyset": {
-    "cmd": "belltimeset bellset",
-    "desc": "Sets the 'bellget' currency allowance amount for users. (How many cowbells people can get and the cooldown for it.) Second parameter is period in hours, default is 24 hours.",
+    "cmd": "cointimeset coinset",
+    "desc": "Sets the 'coinget' currency allowance amount for users. (How many MooCoins people can get and the cooldown for it.) Second parameter is period in hours, default is 24 hours.",
     "usage": [
-      "{0}belltimeset 100",
-      "{0}bellset 50 12"
+      "{0}cointimeset 100",
+      "{0}coinset 50 12"
     ]
   },
   "timely": {
-    "cmd": "bellget getbell baguette bgt gbt",
-    "desc": "Also valid: `{0}bgt`, `{0}gbt`. Use to claim your regenerated cowbells. The bot owner has to specify the amount and the period on how often you can claim your currency.",
+    "cmd": "coinget getcoin baguette bgt gbt",
+    "desc": "Also valid: `{0}bgt`, `{0}gbt`. Use to claim your regenerated MooCoins. The bot owner has to specify the amount and the period on how often you can claim your currency.",
     "usage": [
       "{0}baguette",
       "Yes, that's a thing."
     ]
   },
   "timelyreset": {
-    "cmd": "belltimereset",
-    "desc": "Resets *all* user cooldowns on the `{0}bellget` command.",
+    "cmd": "cointimereset",
+    "desc": "Resets *all* user cooldowns on the `{0}coinget` command.",
     "usage": [
-      "{0}belltimereset"
+      "{0}cointimereset"
     ]
   },
   "novel": {
@@ -3295,7 +3295,7 @@
   },
   "masskill": {
     "cmd": "masskill",
-    "desc": "Specify a new-line separated list of `userid reason`. You can use Username#discrim instead of UserId. Specified users will be **banned** from the current server, **blacklisted** from the bot, **and** have all of their cowbells taken away!",
+    "desc": "Specify a new-line separated list of `userid reason`. You can use Username#discrim instead of UserId. Specified users will be **banned** from the current server, **blacklisted** from the bot, **and** have all of their MooCoins taken away!",
     "usage": [
       "{0}masskill BadPerson#1234 Not Safe for OC"
     ]
@@ -3479,7 +3479,7 @@
   },
   "economy": {
     "cmd": "economy",
-    "desc": "Breakdown of the current state of the bot's economy. Updates every 3 minutes.",
+    "desc": "Breakdown of the current state of the bot's MooCoin economy. Updates every 3 minutes.",
     "usage": [
       "{0}economy"
     ]

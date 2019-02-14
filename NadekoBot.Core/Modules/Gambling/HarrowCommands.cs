@@ -44,7 +44,7 @@ namespace NadekoBot.Modules.Gambling
                     {
                         try
                         {
-                            await ReplyErrorLocalized("harrow_no_more").ConfigureAwait(false);
+                            await ReplyErrorLocalizedAsync("harrow_no_more").ConfigureAwait(false);
                         }
                         catch
                         {
@@ -106,7 +106,7 @@ namespace NadekoBot.Modules.Gambling
                             return c;
                         });
 
-                await ReplyConfirmLocalized("harrow_switch").ConfigureAwait(false);
+                await ReplyConfirmLocalizedAsync("harrow_switch").ConfigureAwait(false);
             }
         }
     }

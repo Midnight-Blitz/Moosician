@@ -94,7 +94,7 @@ namespace NadekoBot.Modules.Gambling
 
                 if (entry == null)
                 {
-                    await ReplyErrorLocalized("shop_item_not_found").ConfigureAwait(false);
+                    await ReplyErrorLocalizedAsync("shop_item_not_found").ConfigureAwait(false);
                     return;
                 }
 
@@ -105,7 +105,7 @@ namespace NadekoBot.Modules.Gambling
 
                     if (role == null)
                     {
-                        await ReplyErrorLocalized("shop_role_not_found").ConfigureAwait(false);
+                        await ReplyErrorLocalizedAsync("shop_role_not_found").ConfigureAwait(false);
                         return;
                     }
 
@@ -119,19 +119,19 @@ namespace NadekoBot.Modules.Gambling
                         {
                             _log.Warn(ex);
                             await _cs.AddAsync(Context.User.Id, $"Shop error refund", entry.Price).ConfigureAwait(false);
-                            await ReplyErrorLocalized("shop_role_purchase_error").ConfigureAwait(false);
+                            await ReplyErrorLocalizedAsync("shop_role_purchase_error").ConfigureAwait(false);
                             return;
                         }
                         var profit = GetProfitAmount(entry.Price);
                         await _cs.AddAsync(entry.AuthorId, $"Shop sell item - {entry.Type}", profit).ConfigureAwait(false);
                         await _cs.AddAsync(Context.Client.CurrentUser.Id, $"Shop sell item - cut", entry.Price - profit).ConfigureAwait(false);
-                        await ReplyConfirmLocalized("shop_role_purchase", Format.Bold(role.Name)).ConfigureAwait(false);
-                        await ReplyConfirmLocalized("shop_role_purchase", Format.Bold(role.Name)).ConfigureAwait(false);
+                        await ReplyConfirmLocalizedAsync("shop_role_purchase", Format.Bold(role.Name)).ConfigureAwait(false);
+                        await ReplyConfirmLocalizedAsync("shop_role_purchase", Format.Bold(role.Name)).ConfigureAwait(false);
                         return;
                     }
                     else
                     {
-                        await ReplyErrorLocalized("not_enough", Bc.BotConfig.CurrencySign).ConfigureAwait(false);
+                        await ReplyErrorLocalizedAsync("not_enough", Bc.BotConfig.CurrencySign).ConfigureAwait(false);
                         return;
                     }
                 }
@@ -139,7 +139,7 @@ namespace NadekoBot.Modules.Gambling
                 {
                     if (entry.Items.Count == 0)
                     {
-                        await ReplyErrorLocalized("out_of_stock").ConfigureAwait(false);
+                        await ReplyErrorLocalizedAsync("out_of_stock").ConfigureAwait(false);
                         return;
                     }
 
@@ -185,14 +185,14 @@ namespace NadekoBot.Modules.Gambling
                                     }
                                 }
                             }
-                            await ReplyErrorLocalized("shop_buy_error").ConfigureAwait(false);
+                            await ReplyErrorLocalizedAsync("shop_buy_error").ConfigureAwait(false);
                             return;
                         }
-                        await ReplyConfirmLocalized("shop_item_purchase").ConfigureAwait(false);
+                        await ReplyConfirmLocalizedAsync("shop_item_purchase").ConfigureAwait(false);
                     }
                     else
                     {
-                        await ReplyErrorLocalized("not_enough", Bc.BotConfig.CurrencySign).ConfigureAwait(false);
+                        await ReplyErrorLocalizedAsync("not_enough", Bc.BotConfig.CurrencySign).ConfigureAwait(false);
                         return;
                     }
                 }
@@ -204,7 +204,8 @@ namespace NadekoBot.Modules.Gambling
 
             [NadekoCommand, Usage, Description, Aliases]
             [RequireContext(ContextType.Guild)]
-            [RequireUserPermission(GuildPermission.ManageGuild)]
+            [OwnerOnly]
+            //[RequireUserPermission(GuildPermission.ManageGuild)]
             [RequireBotPermission(GuildPermission.ManageRoles)]
             public async Task ShopAdd(Role _, int price, [Remainder] IRole role)
             {
@@ -234,7 +235,8 @@ namespace NadekoBot.Modules.Gambling
 
             [NadekoCommand, Usage, Description, Aliases]
             [RequireContext(ContextType.Guild)]
-            [RequireUserPermission(GuildPermission.ManageGuild)]
+            [OwnerOnly]
+            //[RequireUserPermission(GuildPermission.ManageGuild)]
             public async Task ShopAdd(List _, int price, [Remainder]string name)
             {
                 var entry = new ShopEntry()
@@ -291,13 +293,13 @@ namespace NadekoBot.Modules.Gambling
                     }
                 }
                 if (entry == null)
-                    await ReplyErrorLocalized("shop_item_not_found").ConfigureAwait(false);
+                    await ReplyErrorLocalizedAsync("shop_item_not_found").ConfigureAwait(false);
                 else if (!rightType)
-                    await ReplyErrorLocalized("shop_item_wrong_type").ConfigureAwait(false);
+                    await ReplyErrorLocalizedAsync("shop_item_wrong_type").ConfigureAwait(false);
                 else if (added == false)
-                    await ReplyErrorLocalized("shop_list_item_not_unique").ConfigureAwait(false);
+                    await ReplyErrorLocalizedAsync("shop_list_item_not_unique").ConfigureAwait(false);
                 else
-                    await ReplyConfirmLocalized("shop_list_item_added").ConfigureAwait(false);
+                    await ReplyConfirmLocalizedAsync("shop_list_item_added").ConfigureAwait(false);
             }
 
             [NadekoCommand, Usage, Description, Aliases]
@@ -327,7 +329,7 @@ namespace NadekoBot.Modules.Gambling
                 }
 
                 if (removed == null)
-                    await ReplyErrorLocalized("shop_item_not_found").ConfigureAwait(false);
+                    await ReplyErrorLocalizedAsync("shop_item_not_found").ConfigureAwait(false);
                 else
                     await Context.Channel.EmbedAsync(EntryToEmbed(removed)
                         .WithTitle(GetText("shop_item_rm"))).ConfigureAwait(false);

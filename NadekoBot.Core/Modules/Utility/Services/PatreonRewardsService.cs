@@ -115,7 +115,6 @@ namespace NadekoBot.Modules.Utility.Services
                 var datas = _pledges?.Where(x => x.User.attributes?.social_connections?.discord?.user_id == userId.ToString())
                     ?? Enumerable.Empty<PatreonUserAndReward>();
 
-
                 foreach (var data in datas)
                 {
                     var amount = (int)(data.Reward.attributes.amount_cents * _bc.BotConfig.PatreonCurrencyPerCent);

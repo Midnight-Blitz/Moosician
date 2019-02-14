@@ -1,12 +1,13 @@
 ﻿using Discord;
 using Discord.Commands;
-using NadekoBot.Extensions;
+using Discord.WebSocket;
 using NadekoBot.Core.Services;
+using NadekoBot.Core.Services.Impl;
+using NadekoBot.Extensions;
 using NLog;
 using System.Globalization;
 using System.Threading.Tasks;
-using Discord.WebSocket;
-using NadekoBot.Core.Services.Impl;
+
 
 namespace NadekoBot.Modules
 {
@@ -64,25 +65,25 @@ namespace NadekoBot.Modules
         protected string GetText(string key, params object[] replacements) =>
             Strings.GetText(key, _cultureInfo, LowerModuleTypeName, replacements);
 
-        public Task<IUserMessage> ErrorLocalized(string textKey, params object[] replacements)
+        public Task<IUserMessage> ErrorLocalizedAsync(string textKey, params object[] replacements)
         {
             var text = GetText(textKey, replacements);
             return Context.Channel.SendErrorAsync(text);
         }
 
-        public Task<IUserMessage> ReplyErrorLocalized(string textKey, params object[] replacements)
+        public Task<IUserMessage> ReplyErrorLocalizedAsync(string textKey, params object[] replacements)
         {
             var text = GetText(textKey, replacements);
             return Context.Channel.SendErrorAsync(Format.Bold(Context.User.ToString()) + " " + text);
         }
 
-        public Task<IUserMessage> ConfirmLocalized(string textKey, params object[] replacements)
+        public Task<IUserMessage> ConfirmLocalizedAsync(string textKey, params object[] replacements)
         {
             var text = GetText(textKey, replacements);
             return Context.Channel.SendConfirmAsync(text);
         }
 
-        public Task<IUserMessage> ReplyConfirmLocalized(string textKey, params object[] replacements)
+        public Task<IUserMessage> ReplyConfirmLocalizedAsync(string textKey, params object[] replacements)
         {
             var text = GetText(textKey, replacements);
             return Context.Channel.SendConfirmAsync(Format.Bold(Context.User.ToString()) + " " + text);

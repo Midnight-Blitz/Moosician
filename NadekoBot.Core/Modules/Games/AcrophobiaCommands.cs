@@ -16,11 +16,11 @@ namespace NadekoBot.Modules.Games
     public partial class Games
     {
         [Group]
-        public class AcropobiaCommands : NadekoSubmodule<GamesService>
+        public class AcrophobiaCommands : NadekoSubmodule<GamesService>
         {
             private readonly DiscordSocketClient _client;
 
-            public AcropobiaCommands(DiscordSocketClient client)
+            public AcrophobiaCommands(DiscordSocketClient client)
             {
                 _client = client;
             }
@@ -54,7 +54,7 @@ namespace NadekoBot.Modules.Games
                 }
                 else
                 {
-                    await ReplyErrorLocalized("acro_running").ConfigureAwait(false);
+                    await ReplyErrorLocalizedAsync("acro_running").ConfigureAwait(false);
                 }
 
                 Task _client_MessageReceived(SocketMessage msg)

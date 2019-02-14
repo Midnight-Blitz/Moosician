@@ -47,7 +47,7 @@ namespace NadekoBot.Core.Services.Database.Models
         public string DMHelpString { get; set; } = "Type `.help` or `.h` for command help.";
         public string HelpString { get; set; } = @"You can use `.modules` to see an updated list of all modules.
 Modules order the hundreds of Moosician commands available into sections.
-Currently, this consists of: `Admin`, `CustomReactions`, `Gambling`, `Games`,
+Currently, this consists of: `Admin`, `Cantrips`, `CustomReactions`, `Gambling`, `Games`,
 `Help`, `Music`, `Permissions`, `Searches`, `Utility`, and `Xp`.
 
 You can use `.commands ModuleName`
@@ -56,14 +56,7 @@ You can use `.commands ModuleName`
 For help with a specific command, use `.help CommandName` or `.h name`
 (Example: `.help .h`)
 
-
-**LIST OF COMMANDS CAN BE FOUND ON THIS LINK**
-(Please note, these are a bit inconsistant with Moosician's commands.
-For now, please use the help screen here.)
-<http://nadekobot.me/commands>
-(Some time in the future, there will be a resource for this that's almost always updated, and will replace the link above.)
-
-For bot support, please ask *Midnight#0042*. If it involves moderation, please ask a Moderator or Admin instead.";
+For bot support, please ask *Midnight#0042*.";
 
         public int MigrationVersion { get; set; }
 

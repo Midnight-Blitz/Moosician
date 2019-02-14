@@ -33,7 +33,6 @@ namespace NadekoBot.Modules.Administration
         [NadekoCommand, Usage, Description, Aliases]
         [RequireContext(ContextType.Guild)]
         [RequireUserPermission(GuildPermission.ManageMessages)]
-        ///[RequireBotPermission(GuildPermission.ManageMessages)]
         [Priority(2)]
         public async Task Delmsgoncmd(List _)
         {
@@ -76,19 +75,18 @@ namespace NadekoBot.Modules.Administration
         [NadekoCommand, Usage, Description, Aliases]
         [RequireContext(ContextType.Guild)]
         [RequireUserPermission(GuildPermission.ManageMessages)]
-        ///[RequireBotPermission(GuildPermission.ManageMessages)]
         [Priority(1)]
         public async Task Delmsgoncmd(Server _ = Server.Server)
         {
             if (_service.ToggleDeleteMessageOnCommand(Context.Guild.Id))
             {
                 _service.DeleteMessagesOnCommand.Add(Context.Guild.Id);
-                await ReplyConfirmLocalized("delmsg_on").ConfigureAwait(false);
+                await ReplyConfirmLocalizedAsync("delmsg_on").ConfigureAwait(false);
             }
             else
             {
                 _service.DeleteMessagesOnCommand.TryRemove(Context.Guild.Id);
-                await ReplyConfirmLocalized("delmsg_off").ConfigureAwait(false);
+                await ReplyConfirmLocalizedAsync("delmsg_off").ConfigureAwait(false);
             }
         }
 
@@ -137,17 +135,17 @@ namespace NadekoBot.Modules.Administration
             if (s == State.Disable)
             {
                 _service.DeleteMessagesOnCommandChannels.AddOrUpdate(chId.Value, false, delegate { return false; });
-                await ReplyConfirmLocalized("delmsg_channel_off").ConfigureAwait(false);
+                await ReplyConfirmLocalizedAsync("delmsg_channel_off").ConfigureAwait(false);
             }
             else if (s == State.Enable)
             {
                 _service.DeleteMessagesOnCommandChannels.AddOrUpdate(chId.Value, true, delegate { return true; });
-                await ReplyConfirmLocalized("delmsg_channel_on").ConfigureAwait(false);
+                await ReplyConfirmLocalizedAsync("delmsg_channel_on").ConfigureAwait(false);
             }
             else
             {
                 _service.DeleteMessagesOnCommandChannels.TryRemove(chId.Value, out var _);
-                await ReplyConfirmLocalized("delmsg_channel_inherit").ConfigureAwait(false);
+                await ReplyConfirmLocalizedAsync("delmsg_channel_inherit").ConfigureAwait(false);
             }
         }
 
@@ -170,7 +168,7 @@ namespace NadekoBot.Modules.Administration
                     // ignored
                 }
             }
-            await ReplyConfirmLocalized("deafen").ConfigureAwait(false);
+            await ReplyConfirmLocalizedAsync("deafen").ConfigureAwait(false);
 
         }
 
@@ -194,7 +192,7 @@ namespace NadekoBot.Modules.Administration
                     // ignored
                 }
             }
-            await ReplyConfirmLocalized("undeafen").ConfigureAwait(false);
+            await ReplyConfirmLocalizedAsync("undeafen").ConfigureAwait(false);
         }
 
         [NadekoCommand, Usage, Description, Aliases]
@@ -204,7 +202,7 @@ namespace NadekoBot.Modules.Administration
         public async Task DelVoiChanl([Remainder] IVoiceChannel voiceChannel)
         {
             await voiceChannel.DeleteAsync().ConfigureAwait(false);
-            await ReplyConfirmLocalized("delvoich", Format.Bold(voiceChannel.Name)).ConfigureAwait(false);
+            await ReplyConfirmLocalizedAsync("delvoich", Format.Bold(voiceChannel.Name)).ConfigureAwait(false);
         }
 
         [NadekoCommand, Usage, Description, Aliases]
@@ -214,7 +212,7 @@ namespace NadekoBot.Modules.Administration
         public async Task CreatVoiChanl([Remainder] string channelName)
         {
             var ch = await Context.Guild.CreateVoiceChannelAsync(channelName).ConfigureAwait(false);
-            await ReplyConfirmLocalized("createvoich", Format.Bold(ch.Name)).ConfigureAwait(false);
+            await ReplyConfirmLocalizedAsync("createvoich", Format.Bold(ch.Name)).ConfigureAwait(false);
         }
 
         [NadekoCommand, Usage, Description, Aliases]
@@ -224,7 +222,7 @@ namespace NadekoBot.Modules.Administration
         public async Task DelTxtChanl([Remainder] ITextChannel toDelete)
         {
             await toDelete.DeleteAsync().ConfigureAwait(false);
-            await ReplyConfirmLocalized("deltextchan", Format.Bold(toDelete.Name)).ConfigureAwait(false);
+            await ReplyConfirmLocalizedAsync("deltextchan", Format.Bold(toDelete.Name)).ConfigureAwait(false);
         }
 
         [NadekoCommand, Usage, Description, Aliases]
@@ -234,7 +232,7 @@ namespace NadekoBot.Modules.Administration
         public async Task CreaTxtChanl([Remainder] string channelName)
         {
             var txtCh = await Context.Guild.CreateTextChannelAsync(channelName).ConfigureAwait(false);
-            await ReplyConfirmLocalized("createtextchan", Format.Bold(txtCh.Name)).ConfigureAwait(false);
+            await ReplyConfirmLocalizedAsync("createtextchan", Format.Bold(txtCh.Name)).ConfigureAwait(false);
         }
 
         [NadekoCommand, Usage, Description, Aliases]
@@ -246,7 +244,7 @@ namespace NadekoBot.Modules.Administration
             var channel = (ITextChannel)Context.Channel;
             topic = topic ?? "";
             await channel.ModifyAsync(c => c.Topic = topic).ConfigureAwait(false);
-            await ReplyConfirmLocalized("set_topic").ConfigureAwait(false);
+            await ReplyConfirmLocalizedAsync("set_topic").ConfigureAwait(false);
 
         }
         [NadekoCommand, Usage, Description, Aliases]
@@ -257,7 +255,7 @@ namespace NadekoBot.Modules.Administration
         {
             var channel = (ITextChannel)Context.Channel;
             await channel.ModifyAsync(c => c.Name = name).ConfigureAwait(false);
-            await ReplyConfirmLocalized("set_channel_name").ConfigureAwait(false);
+            await ReplyConfirmLocalizedAsync("set_channel_name").ConfigureAwait(false);
         }
 
         [NadekoCommand, Usage, Description, Aliases]
@@ -268,14 +266,9 @@ namespace NadekoBot.Modules.Administration
             if (string.IsNullOrWhiteSpace(text))
                 return;
 
-            var msgs = await Context.Channel.GetMessagesAsync().FlattenAsync()
-                .ConfigureAwait(false);
+            var msg = await Context.Channel.GetMessageAsync(messageId);
 
-            IUserMessage msg = (IUserMessage)msgs.FirstOrDefault(x => x.Id == messageId
-                && x.Author.Id == Context.Client.CurrentUser.Id
-                && x is IUserMessage);
-
-            if (msg == null)
+            if (!(msg is IUserMessage umsg) || msg.Author.Id != Context.Client.CurrentUser.Id)
                 return;
 
             var rep = new ReplacementBuilder()
@@ -285,7 +278,7 @@ namespace NadekoBot.Modules.Administration
             if (CREmbed.TryParse(text, out var crembed))
             {
                 rep.Replace(crembed);
-                await msg.ModifyAsync(x =>
+                await umsg.ModifyAsync(x =>
                 {
                     x.Embed = crembed.ToEmbed().Build();
                     x.Content = crembed.PlainText?.SanitizeMentions() ?? "";
@@ -293,7 +286,7 @@ namespace NadekoBot.Modules.Administration
             }
             else
             {
-                await msg.ModifyAsync(x => x.Content = text.SanitizeMentions())
+                await umsg.ModifyAsync(x => x.Content = text.SanitizeMentions())
                     .ConfigureAwait(false);
             }
         }
